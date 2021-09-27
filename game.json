@@ -1,0 +1,548 @@
+{
+	"width": 1280,
+	"height": 720,
+	"fps": 30,
+	"main": "./script/main.js",
+	"assets": {
+		"fit": {
+			"type": "audio",
+			"path": "audio/fit",
+			"systemId": "sound",
+			"duration": 183
+		},
+		"fit2": {
+			"type": "audio",
+			"path": "audio/fit2",
+			"systemId": "sound",
+			"duration": 154
+		},
+		"voice_25": {
+			"type": "audio",
+			"path": "audio/voice_25",
+			"systemId": "sound",
+			"duration": 1718
+		},
+		"voice_50": {
+			"type": "audio",
+			"path": "audio/voice_50",
+			"systemId": "sound",
+			"duration": 1238
+		},
+		"voice_75": {
+			"type": "audio",
+			"path": "audio/voice_75",
+			"systemId": "sound",
+			"duration": 1099
+		},
+		"voice_8888": {
+			"type": "audio",
+			"path": "audio/voice_8888",
+			"systemId": "sound",
+			"duration": 1408
+		},
+		"voice_bottom": {
+			"type": "audio",
+			"path": "audio/voice_bottom",
+			"systemId": "sound",
+			"duration": 2166
+		},
+		"voice_left": {
+			"type": "audio",
+			"path": "audio/voice_left",
+			"systemId": "sound",
+			"duration": 2272
+		},
+		"voice_outer": {
+			"type": "audio",
+			"path": "audio/voice_outer",
+			"systemId": "sound",
+			"duration": 1856
+		},
+		"voice_right": {
+			"type": "audio",
+			"path": "audio/voice_right",
+			"systemId": "sound",
+			"duration": 2208
+		},
+		"voice_top": {
+			"type": "audio",
+			"path": "audio/voice_top",
+			"systemId": "sound",
+			"duration": 2176
+		},
+		"crown_0": {
+			"type": "image",
+			"width": 90,
+			"height": 60,
+			"path": "image/crown_0.png"
+		},
+		"crown_1": {
+			"type": "image",
+			"width": 60,
+			"height": 40,
+			"path": "image/crown_1.png"
+		},
+		"crown_2": {
+			"type": "image",
+			"width": 60,
+			"height": 40,
+			"path": "image/crown_2.png"
+		},
+		"crown_3": {
+			"type": "image",
+			"width": 60,
+			"height": 40,
+			"path": "image/crown_3.png"
+		},
+		"infoBtn": {
+			"type": "image",
+			"width": 96,
+			"height": 96,
+			"path": "image/infoBtn.png"
+		},
+		"joinBtn": {
+			"type": "image",
+			"width": 192,
+			"height": 108,
+			"path": "image/joinBtn.png"
+		},
+		"left": {
+			"type": "image",
+			"width": 192,
+			"height": 108,
+			"path": "image/left.png"
+		},
+		"playBtn": {
+			"type": "image",
+			"width": 192,
+			"height": 108,
+			"path": "image/playBtn.png"
+		},
+		"previewBtn": {
+			"type": "image",
+			"width": 100,
+			"height": 100,
+			"path": "image/previewBtn.png"
+		},
+		"result": {
+			"type": "image",
+			"width": 870,
+			"height": 690,
+			"path": "image/result.jpg"
+		},
+		"resultBtn": {
+			"type": "image",
+			"width": 100,
+			"height": 100,
+			"path": "image/resultBtn.png"
+		},
+		"right": {
+			"type": "image",
+			"width": 192,
+			"height": 108,
+			"path": "image/right.png"
+		},
+		"sanka_nin": {
+			"type": "image",
+			"width": 380,
+			"height": 80,
+			"path": "image/sanka_nin.png"
+		},
+		"select_E": {
+			"type": "image",
+			"width": 380,
+			"height": 80,
+			"path": "image/select_E.png"
+		},
+		"select_H": {
+			"type": "image",
+			"width": 380,
+			"height": 80,
+			"path": "image/select_H.png"
+		},
+		"select_N": {
+			"type": "image",
+			"width": 380,
+			"height": 80,
+			"path": "image/select_N.png"
+		},
+		"setting": {
+			"type": "image",
+			"width": 96,
+			"height": 96,
+			"path": "image/setting.png"
+		},
+		"titleBtn": {
+			"type": "image",
+			"width": 291,
+			"height": 108,
+			"path": "image/titleBtn.png"
+		},
+		"title_back": {
+			"type": "image",
+			"width": 380,
+			"height": 80,
+			"path": "image/title_back.png"
+		},
+		"visibleBtn": {
+			"type": "image",
+			"width": 96,
+			"height": 96,
+			"path": "image/visibleBtn.png"
+		},
+		"zoomIn": {
+			"type": "image",
+			"width": 100,
+			"height": 100,
+			"path": "image/zoomIn.png"
+		},
+		"zoomOut": {
+			"type": "image",
+			"width": 100,
+			"height": 100,
+			"path": "image/zoomOut.png"
+		},
+		"Animation": {
+			"type": "script",
+			"path": "script/Animation.js",
+			"global": true
+		},
+		"SceneEx": {
+			"type": "script",
+			"path": "script/eoc/SceneEx.js",
+			"global": true
+		},
+		"Server": {
+			"type": "script",
+			"path": "script/eoc/Server.js",
+			"global": true
+		},
+		"jigsaw": {
+			"type": "script",
+			"path": "script/events/jigsaw.js",
+			"global": true
+		},
+		"piece": {
+			"type": "script",
+			"path": "script/events/piece.js",
+			"global": true
+		},
+		"player": {
+			"type": "script",
+			"path": "script/events/player.js",
+			"global": true
+		},
+		"Jigsaw": {
+			"type": "script",
+			"path": "script/Jigsaw.js",
+			"global": true
+		},
+		"funcs": {
+			"type": "script",
+			"path": "script/lib/funcs.js",
+			"global": true
+		},
+		"pieceCut": {
+			"type": "script",
+			"path": "script/lib/pieceCut.js",
+			"global": true
+		},
+		"main": {
+			"type": "script",
+			"path": "script/main.js",
+			"global": true
+		},
+		"AssetManager": {
+			"type": "script",
+			"path": "script/models/AssetManager.js",
+			"global": true
+		},
+		"Piece": {
+			"type": "script",
+			"path": "script/models/Piece.js",
+			"global": true
+		},
+		"Player": {
+			"type": "script",
+			"path": "script/models/Player.js",
+			"global": true
+		},
+		"Slider": {
+			"type": "script",
+			"path": "script/models/Slider.js",
+			"global": true
+		},
+		"StopWatch": {
+			"type": "script",
+			"path": "script/models/StopWatch.js",
+			"global": true
+		},
+		"params": {
+			"type": "script",
+			"path": "script/params.js",
+			"global": true
+		},
+		"PieceScene": {
+			"type": "script",
+			"path": "script/PieceScene.js",
+			"global": true
+		},
+		"PieceServer": {
+			"type": "script",
+			"path": "script/PieceServer.js",
+			"global": true
+		},
+		"PlayingInfo": {
+			"type": "script",
+			"path": "script/PlayingInfo.js",
+			"global": true
+		},
+		"PlayingUI": {
+			"type": "script",
+			"path": "script/PlayingUI.js",
+			"global": true
+		},
+		"Preview": {
+			"type": "script",
+			"path": "script/Preview.js",
+			"global": true
+		},
+		"Result": {
+			"type": "script",
+			"path": "script/Result.js",
+			"global": true
+		},
+		"Title": {
+			"type": "script",
+			"path": "script/Title.js",
+			"global": true
+		},
+		"asset:f17d04": {
+			"type": "image",
+			"width": 300,
+			"height": 300,
+			"path": "assets/!/00.png"
+		},
+		"asset:a86239": {
+			"type": "image",
+			"width": 300,
+			"height": 300,
+			"path": "assets/!/01.png"
+		},
+		"asset:b6215c": {
+			"type": "text",
+			"path": "assets/!.txt"
+		},
+		"asset:5a240e": {
+			"type": "image",
+			"width": 1280,
+			"height": 780,
+			"path": "assets/antelope.jpg"
+		},
+		"asset:2be7e1": {
+			"type": "image",
+			"width": 1920,
+			"height": 1439,
+			"path": "assets/architecture.jpg"
+		},
+		"asset:ba46bf": {
+			"type": "image",
+			"width": 1920,
+			"height": 884,
+			"path": "assets/audience.jpg"
+		},
+		"asset:ec9f2a": {
+			"type": "image",
+			"width": 1280,
+			"height": 960,
+			"path": "assets/beach.jpg"
+		},
+		"asset:b37abb": {
+			"type": "image",
+			"width": 1280,
+			"height": 720,
+			"path": "assets/cake.jpg"
+		},
+		"asset:8b50c1": {
+			"type": "image",
+			"width": 1920,
+			"height": 1209,
+			"path": "assets/cockpit.jpg"
+		},
+		"asset:9dd095": {
+			"type": "image",
+			"width": 1920,
+			"height": 1280,
+			"path": "assets/color-fan.jpg"
+		},
+		"asset:ba2759": {
+			"type": "image",
+			"width": 1280,
+			"height": 853,
+			"path": "assets/duck.jpg"
+		},
+		"asset:354bb7": {
+			"type": "image",
+			"width": 1280,
+			"height": 416,
+			"path": "assets/excavators.jpg"
+		},
+		"asset:166b9c": {
+			"type": "image",
+			"width": 1280,
+			"height": 853,
+			"path": "assets/firewood.jpg"
+		},
+		"asset:fcae74": {
+			"type": "image",
+			"width": 1280,
+			"height": 851,
+			"path": "assets/fox.jpg"
+		},
+		"asset:febc81": {
+			"type": "image",
+			"width": 1280,
+			"height": 853,
+			"path": "assets/frangipani.jpg"
+		},
+		"asset:1d7cbd": {
+			"type": "image",
+			"width": 1920,
+			"height": 1076,
+			"path": "assets/japan.jpg"
+		},
+		"asset:67e90f": {
+			"type": "image",
+			"width": 1280,
+			"height": 853,
+			"path": "assets/latte-art.jpg"
+		},
+		"asset:35aeaf": {
+			"type": "image",
+			"width": 1920,
+			"height": 1280,
+			"path": "assets/living-room.jpg"
+		},
+		"asset:c5607e": {
+			"type": "image",
+			"width": 1280,
+			"height": 960,
+			"path": "assets/noodle-soup.jpg"
+		},
+		"asset:59ae0d": {
+			"type": "image",
+			"width": 1280,
+			"height": 855,
+			"path": "assets/paraglider.jpg"
+		},
+		"asset:59416e": {
+			"type": "image",
+			"width": 1280,
+			"height": 853,
+			"path": "assets/skyscrapers.jpg"
+		},
+		"asset:23e147": {
+			"type": "image",
+			"width": 1280,
+			"height": 852,
+			"path": "assets/supreme.jpg"
+		},
+		"asset:9283dc": {
+			"type": "image",
+			"width": 1920,
+			"height": 1280,
+			"path": "assets/watch.jpg"
+		},
+		"ErrorMessage": {
+			"type": "script",
+			"path": "script/eoc/ErrorMessage.js",
+			"global": true
+		},
+		"notice": {
+			"type": "script",
+			"path": "script/models/notice.js",
+			"global": true
+		},
+		"ScoreBoard": {
+			"type": "script",
+			"path": "script/ScoreBoard.js",
+			"global": true
+		},
+		"CreateUserPazzle": {
+			"type": "script",
+			"path": "script/CreateUserPazzle.js",
+			"global": true
+		},
+		"userPazzle": {
+			"type": "script",
+			"path": "script/events/userPazzle.js",
+			"global": true
+		},
+		"BitmapImage": {
+			"type": "script",
+			"path": "script/models/BitmapImage.js",
+			"global": true
+		},
+		"decoder": {
+			"type": "script",
+			"path": "script/lib/jpeg/decoder.js",
+			"global": true
+		},
+		"encoder": {
+			"type": "script",
+			"path": "script/lib/jpeg/encoder.js",
+			"global": true
+		},
+		"image": {
+			"type": "script",
+			"path": "script/lib/jpeg/image.js",
+			"global": true
+		},
+		"pixel": {
+			"type": "script",
+			"path": "script/lib/jpeg/pixel.js",
+			"global": true
+		},
+		"StrokeRect": {
+			"type": "script",
+			"path": "script/models/StrokeRect.js",
+			"global": true
+		}
+	},
+	"moduleMainScripts": {
+		"@akashic-extension/akashic-label": "node_modules/@akashic-extension/akashic-label/lib/index.js",
+		"kamihubuki-js": "node_modules/kamihubuki-js/lib/index.js",
+		"@akashic-extension/akashic-hover-plugin": "node_modules/@akashic-extension/akashic-hover-plugin/lib/index.js",
+		"@akashic-extension/resolve-player-info": "node_modules/@akashic-extension/resolve-player-info/lib/index.js"
+	},
+	"environment": {
+		"sandbox-runtime": "3",
+		"niconico": {
+			"supportedModes": [
+				"multi_admission"
+			]
+		},
+		"atsumaru": {
+			"supportedModes": [
+				"multi"
+			]
+		},
+		"external": {
+			"coeLimited": "0",
+			"atsumaru": "0"
+		}
+	},
+	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-hover-plugin/lib/Converter.js",
+		"node_modules/@akashic-extension/akashic-hover-plugin/lib/HoverPlugin.js",
+		"node_modules/@akashic-extension/akashic-hover-plugin/lib/index.js",
+		"node_modules/@akashic-extension/akashic-label/lib/DefaultRubyParser.js",
+		"node_modules/@akashic-extension/akashic-label/lib/FragmentDrawInfo.js",
+		"node_modules/@akashic-extension/akashic-label/lib/Label.js",
+		"node_modules/@akashic-extension/akashic-label/lib/RubyParser.js",
+		"node_modules/@akashic-extension/akashic-label/lib/index.js",
+		"node_modules/@akashic-extension/resolve-player-info/lib/FallbackDialog.js",
+		"node_modules/@akashic-extension/resolve-player-info/lib/index.js",
+		"node_modules/kamihubuki-js/lib/index.js"
+	]
+}
