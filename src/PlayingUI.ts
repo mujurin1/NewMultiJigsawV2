@@ -25,7 +25,7 @@ export class PlayingUI {
 
   public readonly colors: string[] = [
     "#0087CC", "#A900CC", "#CC4300", "#22CC00",
-    "#3D738E", "#813D8E", "#8E583D", "#4A8E3D"];//, "rgba(100,100,100,0)"];
+    "#3D738E", "#813D8E", "#8E583D", "#4A8E3D", "rgba(0,0,0,0)"];
   private selectColor = 0;
 
   constructor(scene: PieceScene, title: string, prvSprite: g.Sprite) {

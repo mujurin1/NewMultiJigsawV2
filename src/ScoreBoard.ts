@@ -144,6 +144,7 @@ export class ScoreBoard {
    */
   public show(boardID: number, level: number): void {
     this.level = level;
+    if (level == -1) return;
     this.display.show();
     // ランキング情報取得
     (<any>window).RPGAtsumaru.scoreboards.getRecords(boardID).then((scoreboardData: ScoreboardData) => {

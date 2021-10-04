@@ -19,11 +19,11 @@ export class BitmapImage extends g.E {
   }
 
   renderSelf(renderer: g.Renderer, camera?: g.Camera): boolean {
-    // // サーバーの場合 this.imageData が null でこの後エラー出るしどうせ画面無いしで何もしない
-    // if (GameParams.isServer) return;
+    
+    const data = this.imageData?.data;
+    // サーバーの場合 this.imageData が null でこの後エラー出るしどうせ画面無いしで何もしない
+    if (data == undefined) return;
 
-    // colorBuffer2ImageData(this.imageData);
-    const data = this.imageData.data;
     for (let i = 0; i < data.length; i++) {
       data[i] = this.colorBuffer.data[i];
     }

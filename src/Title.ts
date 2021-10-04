@@ -244,7 +244,7 @@ export class Title {
       font: this.fontB,
       width: 1000,
       height: 30,
-      text: "v 10.8.2\nフィードバック受付中",
+      text: "v 11.1\n最後のパズルはあなたの画像です",
       fontSize: 30,
       x: 740,
       y: 650,
@@ -364,8 +364,13 @@ export class Title {
    */
   public changePazzle(right: boolean): void {
     const assets = this.assetManager;
+    const pzlCnt = assets.assets.length;
     // 選択したパズルIDを増やして
     this.selectPzlID += right ? +1 : -1;
+
+    if (this.selectPzlID == -1 || this.selectPzlID == pzlCnt) this.selectPzlID = pzlCnt;
+    else if (this.selectPzlID == pzlCnt + 1) this.selectPzlID = 0;
+    else this.selectPzlID = (this.selectPzlID + pzlCnt) % pzlCnt;
     // パズルの種類+1番目だったら
     if (this.isUserPuzzle) {
       // パズル画像を貰う方
@@ -376,15 +381,16 @@ export class Title {
         scene: this.scene,
         parent: userPazzle,
         font: newFont("sans-serif", 90, "white"),
-        text: "好きな画像で遊ぶ",
+        text: " 好きな画像で遊ぶ",
+        y: 100,
         width: this.preview.width
       });
       new Label({
         scene: this.scene,
         parent: userPazzle,
         font: newFont("sans-serif", 50, "white"),
-        text: "（生主がPCの時のみ）\n\n「開始」ボタンを押すと\n専用ページに遷移します",
-        y: 150,
+        text: "（生主がPCの時のみ遊べます）\n\n    「開始」ボタンを押すと\n     別ページに移動します",
+        y: 200,
         width: this.preview.width
       })
       this.preview.append(userPazzle);
@@ -405,7 +411,6 @@ export class Title {
       textH.invalidate();
     } else {
       // アセットからパズルを選択する方
-      this.selectPzlID = (this.selectPzlID + assets.assets.length) % assets.assets.length;
 
       // プレビュー画像を変更する
       const selectPzl = assets.assets[this.selectPzlID];

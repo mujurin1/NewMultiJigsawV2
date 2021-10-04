@@ -56,13 +56,16 @@ export class PieceScene extends SceneEx {
         if (g.game.isSkipping) return;
         if (this.title.isUserPuzzle)
           this.send(new UserPuzzle(undefined));
-        else
-          this.send(new StartPazzle(this.assetManager.assets[this.title.selectPzlID].difficulty[this.title.selectDifID].size.width / 5));
+        else {
+          const size = this.assetManager.assets[this.title.selectPzlID].difficulty[this.title.selectDifID].size;
+          if (size.width > size.height)
+            this.send(new StartPazzle(size.width / 5));
+          else
+            this.send(new StartPazzle(size.height / 5));
+        }
       }
     });
-    this.jigsaw = new Jigsaw({
-      scene: this,
-    });
+    this.jigsaw = new Jigsaw({ scene: this });
 
     this.append(this.title.display);
 
@@ -142,6 +145,12 @@ export class PieceScene extends SceneEx {
         value => {
           this.title.display.append(this.title.joinCnt);
           // this.title.display.show();
+          // ピースの許容値をStartイベントで行っているので、悪影響が無いように「無理やり」呼び出す
+          const size = value.difficulty.size
+          if (size.width > size.height)
+            this.send(new StartPazzle(size.width / 5));
+          else
+            this.send(new StartPazzle(size.height / 5));
           this.pazzleStart(value);
         },
         () => {
@@ -164,14 +173,13 @@ export class PieceScene extends SceneEx {
     if (cutParam != undefined) {
       // ユーザー画像パズル
       this.jigsaw.startPazzle({
-        title: "ユーザー投稿画像",
-        ...pieceCut(cutParam)
+        ...pieceCut(cutParam),
+        title: "ユーザー投稿画像"
       });
     } else {
       // アセットパズル
       const asset = this.assetManager.assets[this.title.selectPzlID];
       this.jigsaw.startPazzle({
-        title: asset.title,
         ...pieceCut(cutParam ?? {
           scene: this,
           pazzleID: this.title.selectPzlID,
@@ -179,7 +187,8 @@ export class PieceScene extends SceneEx {
           wakus: [].concat(...this.assetManager.wakus),
           previewSrc: asset.preview,
           difficulty: asset.difficulty[this.title.selectDifID]
-        })
+        }),
+        title: asset.title
       });
     }
 

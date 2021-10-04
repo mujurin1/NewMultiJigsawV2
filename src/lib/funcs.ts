@@ -1,5 +1,6 @@
 import { Label, LabelParameterObject } from "@akashic-extension/akashic-label";
 import { ShareImageParam } from "../events/userPazzle";
+import { Image as JpgImage } from "./jpeg/image";
 
 /**
  * `Label` のサイズを横幅に合わせる
@@ -108,7 +109,28 @@ function dragover(e: DragEvent) {
   e.dataTransfer.dropEffect = "copy";
 }
 
-export function ConvertBase64(arrayB: ArrayBuffer): Promise<ShareImageParam> {
+// export function ConvertBase64(arrayB: ArrayBuffer): Promise<ShareImageParam> {
+//   const blob = new Blob([arrayB], {
+//     type: "image/png"
+//   });
+//   return new Promise((resolve, reject) => {
+//     createImageBitmap(blob).then(bmp => {
+//       const cnv: HTMLCanvasElement = document.createElement("canvas");
+//       cnv.width = bmp.width;
+//       cnv.height = bmp.height;
+//       const ctx = cnv.getContext("2d");
+//       ctx.drawImage(bmp, 0, 0);
+//       const base64 = cnv.toDataURL("image/jpeg");
+//       resolve({
+//         base64,
+//         width: bmp.width,
+//         height: bmp.height
+//       });
+//     });
+//   });
+// }
+
+export function ConvertJpgImage(arrayB: ArrayBuffer): Promise<JpgImage> {
   const blob = new Blob([arrayB], {
     type: "image/png"
   });
@@ -119,12 +141,13 @@ export function ConvertBase64(arrayB: ArrayBuffer): Promise<ShareImageParam> {
       cnv.height = bmp.height;
       const ctx = cnv.getContext("2d");
       ctx.drawImage(bmp, 0, 0);
-      const base64 = cnv.toDataURL("image/jpeg");
-      resolve({
-        base64,
-        width: bmp.width,
-        height: bmp.height
-      });
+      resolve(new JpgImage(ctx.getImageData(0, 0, cnv.width, cnv.height)));
+      // const base64 = cnv.toDataURL("image/jpeg");
+      // resolve({
+      //   base64,
+      //   width: bmp.width,
+      //   height: bmp.height
+      // });
     });
   });
 }
@@ -143,6 +166,32 @@ export function base64ToArrayBuffer(base64: string) {
 
 export function createFillLabel(frParam: g.FilledRectParameterObject, lbParam: LabelParameterObject): g.FilledRect {
   const back = new g.FilledRect(frParam);
-  new Label({ parent: back, ...lbParam });
+  new Label({ ...lbParam, parent: back, width: back.width - (lbParam.x ?? 0) });
   return back;
 }
+
+/** 上下にスクロールできるラベル入りPaneを作成 */
+export function createScrollLabel(frParam: g.FilledRectParameterObject, lbParam: LabelParameterObject): g.Pane {
+  const pane = new g.Pane(frParam);
+  const board = new g.FilledRect({ ...frParam, parent: pane, x: 0, y: 0, touchable: true });
+  const text = new Label({ ...lbParam, parent: pane, width: pane.width - (lbParam.x ?? 0) });
+
+  board.onPointMove.add(e => {
+    text.y += e.prevDelta.y;
+    if (text.y < pane.height - text.height)
+      text.y = pane.height - text.height;
+    if (text.y > 0)
+      text.y = 0;
+    text.modified();
+  });
+
+  return pane;
+}
+
+// export function numAryToString(ary: number[]): string {
+
+// }
+
+// function numToC(n: number): string {
+
+// }

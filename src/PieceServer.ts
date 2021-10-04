@@ -58,15 +58,17 @@ export class PieceServer extends Server<PieceScene> {
     this.addReceiveMethod(MovePiece.receive(e => {
       const piece = this.jigsaw.pieces[e.param.pieceID];
       // 親が存在していたらだめ || すでにハマっていたらだめ
-      if (piece == undefined ||piece.parentPiece != undefined || piece.isFit) return;
+      if (piece == undefined || piece.parentPiece != undefined || piece.isFit) return;
       if (!!piece.holder && piece.holder.playerID == e.param.playerID) {
         this.broadcast(e);
       }
     }));
     this.addReceiveMethod(PutPiece.receive(e => {
+
       const piece = this.jigsaw.pieces[e.param.pieceID];
       // 親が存在していたらだめ || すでにハマっていたらだめ
-      if (piece == undefined ||piece.parentPiece != undefined || piece.isFit) return;
+      if (piece == undefined || piece.parentPiece != undefined || piece.isFit) return;
+
       // アツマールの場合はすでに掴んでいるので、１００％信用する
       if ((!!piece.holder && !!this.jigsaw.samePlayerID(e.param.playerID)) ||
         GameParams.operation == "atsumaru") {
@@ -169,6 +171,7 @@ export class PieceServer extends Server<PieceScene> {
       childP.parentPiece != undefined &&
       parentP.pieceID == childP.parentPiece.pieceID
     ) return undefined;
+
 
     // どっちかのピースを誰かが持っている
     if (parentP.holder != undefined || childP.holder != undefined ||

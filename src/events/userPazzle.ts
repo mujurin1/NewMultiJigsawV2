@@ -14,7 +14,7 @@ export class ChangePage implements ActionData<ChangePageParam> {
 }
 
 export interface ShareImageParam {
-  base64: string;
+  jpgByteChars: string;
   width: number;
   height: number;
 }

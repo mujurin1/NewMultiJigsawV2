@@ -3,16 +3,19 @@ import { SceneEx } from "./eoc/SceneEx";
 import { Action, ActionData } from "./eoc/Server";
 import { JoinPlayer } from "./events/player";
 import { ChangePage, ChangePageParam, Edit, EditParam, ShareImage, ShareImageParam } from "./events/userPazzle";
-import { addDragDrop, base64ToArrayBuffer, ConvertBase64, createFillLabel, newFont, removeDropFile, spriteSet } from "./lib/funcs";
+import { addDragDrop, base64ToArrayBuffer, ConvertJpgImage, createFillLabel, createScrollLabel, newFont, removeDropFile, spriteSet } from "./lib/funcs";
 import { decode } from "./lib/jpeg/decoder";
 import { CutParam } from "./lib/pieceCut";
 import { BitmapImage } from "./models/BitmapImage";
 import { GameParams } from "./params";
 import { Slider } from "./models/Slider";
 import { StrokeRect } from "./models/StrokeRect";
+import { encode } from "./lib/jpeg/encoder";
+import { Image as JpgImage } from "./lib/jpeg/image";
+import { PieceScene } from "./PieceScene";
 
 export class CreatePuzzle {
-  private readonly scene: SceneEx;
+  private readonly scene: PieceScene;
 
   private readonly start: (value: CutParam) => void;
   private readonly back: () => void;
@@ -20,6 +23,8 @@ export class CreatePuzzle {
   public readonly display: g.E;
 
   private shareBtn: g.FilledRect;
+  /** 開始ボタンを押していないかどうか */
+  private isEdit: boolean = true;
 
   private previewPanel: g.FilledRect;
   private preview: g.E;
@@ -28,22 +33,25 @@ export class CreatePuzzle {
   private border: StrokeRect;
 
   // ピース編集情報
-  private size: g.CommonSize = { width: 0, height: 0 };
-  private count: g.CommonOffset = { x: 0, y: 0 };
+  private pieceSize: g.CommonSize = { width: 0, height: 0 };
+  private matrix: g.CommonOffset = { x: 0, y: 0 };
   private sum: number = 0;
+  /** 画像サイズ（KB） */
+  private capacity: number = 0;
   /** 実際のパズルのサイズ */
   private puzzleSize: g.CommonSize = { width: 0, height: 0 };
   /** 元絵から、パズルにする領域の原点 */
   private puzzleOrigin: g.CommonOffset = { x: 0, y: 0 };
 
   /**
-   * 0: 総数   "ピース数 XXX枚"
-   * 1: 行列数 "行 XX枚  列 XX枚"
-   * 2: サイズ "縦 XX  横 XX"
+   * 0: 画像サイズ "画像サイズ XXX KB"
+   * 1: 総数       "ピース数 XXX枚"
+   * 2: 行列数     "行 XX枚  列 XX枚"
+   * 3: サイズ     "縦 XX  横 XX"
    */
-  private readonly pieceInfoLabel: Label[] = new Array(3);
+  private pieceInfoLabel: Label;
 
-  constructor(scene: SceneEx, start: (value: CutParam) => void, back: () => void) {
+  constructor(scene: PieceScene, start: (value: CutParam) => void, back: () => void) {
     this.scene = scene;
     this.start = start;
     this.back = back;
@@ -59,14 +67,77 @@ export class CreatePuzzle {
       width: 770, height: 460,
       x: 25, y: 35,
     });
-    new Label({
-      scene,
-      parent: this.previewPanel,
-      font: newFont("sans-serif", 50, "white"),
-      text: "ここに画像をD&Dしてください\n（生主のみ可能です）",
-      width: this.previewPanel.width,
-      x: 20, y: 200
+
+    const question = createScrollLabel(
+      { scene, parent: this.display, cssColor: "rgba(0,0,0,0.9)", width: 770, height: 460, x: 25, y: 35, touchable: true },
+      {
+        scene, font: newFont("sans-serif", 35, "white"),
+        text: `\n
+   ---- HELP（HELP!ボタンで閉じます）----\n
+\n\n
+ここに画像をドラッグ&ドロップしてください\n
+（生主のみ可能です。PCからのみ可能です）\n
+\n
+「この画像にする」ボタンで画像を送信します\n
+送信後にピース分割数を決めれます\n
+（右上に書いている容量分通信します）\n
+\n
+赤い枠線は、実際にパズルになる領域です\n
+ドラッグで移動できます\n
+\n
+一度送信した後に画像を変える場合は\n
+ゲームを貼り直した方が良いです\n
+（前の画像分無駄に重くなってしまうため）\n
+\n
+ゲーム開始後およそ２分間（非同期中）\n
+・ピースをはめることが出来ません\n
+・操作が他人と共有されません\n
+\n
+\n
+[よくありそうなQ&A]\n
+
+Q.この画像にするボタンが反応しません\n
+A.画像は　80x80　以上にして下さい\n
+   それでも動かないなら、少し待って下さい\n
+
+Q.開始ボタンが反応しません\n
+A.パズルは　２行２列　以上にして下さい\n
+   それでも動かないなら、少し待って下さい\n
+
+Q.他の人はピースを動かしているのに\n
+   自分はピースを動かせません\n
+A.画像送信後の非同期中に参加をすると\n
+   稀に参加出来ないことがあるようです\n
+   リロードして参加しなおして下さい\n
+
+Q.ゲーム開始後すぐ動かないのが嫌だ\n
+A.画像容量が 80KB 以下ならすぐ動くかも\n
+  （容量はあくまで目安なので）\n
+
+Q.スマホではできませんか？\n
+A.出来ません。ごめんなさい。\n
+
+`,
+        lineGap: -17,
+        width: 0, x: 10
+      });
+
+
+    const helpBtn = createFillLabel(
+      {
+        scene, parent: this.display, cssColor: "#00C24E",
+        x: 840, y: 600, height: 100, width: 230, touchable: true
+      },
+      {
+        scene, font: newFont("sans-serif", 65, "white"), text: "HELP!",
+        textAlign: "center", y: 5, width: 0
+      });
+
+    helpBtn.onPointDown.add(() => {
+      if (question.visible()) question.hide(); else question.show();
     });
+
+
 
     this.EditInfo();
 
@@ -90,26 +161,34 @@ export class CreatePuzzle {
     if (e.param.page == "T") {
       this.back();
     } else {
+      this.preview.scale(1);
+      this.preview.modified();
       // パズル開始
+      this.start({
+        scene: this.scene,
+        level: -1,
+        wakus: [].concat(...this.scene.assetManager.wakus),
+        pazzleID: -1,
+        previewSrc: g.SpriteFactory.createSpriteFromE(this.scene, this.preview),
+        difficulty: {
+          count: this.sum,
+          size: this.pieceSize,
+          origin: this.puzzleOrigin
+        }
+      });
     }
   }
 
   /** 画像の共有 */
   private ShareImage(e: ActionData<ShareImageParam>) {
     if (GameParams.isOwner) {
+      removeDropFile();
       this.shareBtn.destroy();
-      this.border.show();
-      return;
-    }
-
-    // サーバーにはDOMがないので、適当に生成したEで代用
-    if (GameParams.isServer && !GameParams.isOwner) {
-      this.preview = new g.E({
-        scene: this.scene,
-        width: e.param.width,
-        height: e.param.height
-      });
-      return;
+      this.SharedLiverOnlyUI();
+      if (!g.game.isSkipping) {
+        this.border.show();
+        return;
+      }
     }
 
     this.CreateImage(e.param);
@@ -117,9 +196,19 @@ export class CreatePuzzle {
 
   /** 画像の生成 */
   private CreateImage(data: ShareImageParam) {
-    this.previewPanel.children[0].remove();
-    const base64 = data.base64;
-    const jpg = decode(new Uint8Array(base64ToArrayBuffer(base64)));
+    this.previewPanel.children?.pop();
+    // this.capacity = (new Blob([data.jpgByteChars])).size;
+    this.capacity = encodeURIComponent(data.jpgByteChars).replace(/%../g, "x").length;
+    // なんか結構ずれるので、これくらい増やしておく
+    this.capacity = Math.floor(this.capacity * 1.1)
+
+    const jpgBytes = [];
+    for (let i = 0; i < data.jpgByteChars.length; i++) {
+      jpgBytes.push(data.jpgByteChars[i].charCodeAt(0));
+    }
+
+    const jpg = decode(new Uint8Array(jpgBytes));
+
     const colorBuffer: g.ImageData = {
       data: Uint8ClampedArray.from(jpg.data),
       width: jpg.width,
@@ -143,11 +232,11 @@ export class CreatePuzzle {
       height: 0,
       width: 0,
       touchable: GameParams.isOwner,
-      hidden: GameParams.isOwner
+      hidden: GameParams.isOwner && !g.game.isSkipping
     });
     this.border.onPointMove.add(e => {
-      this.puzzleOrigin.x += e.prevDelta.x;
-      this.puzzleOrigin.y += e.prevDelta.y;
+      this.puzzleOrigin.x += e.prevDelta.x / this.preview.scaleX;
+      this.puzzleOrigin.y += e.prevDelta.y / this.preview.scaleX;
       if (this.puzzleOrigin.x < 0) this.puzzleOrigin.x = 0;
       else if (this.puzzleOrigin.x > this.preview.width - this.puzzleSize.width)
         this.puzzleOrigin.x = this.preview.width - this.puzzleSize.width;
@@ -170,14 +259,14 @@ export class CreatePuzzle {
 
   /** 画像の編集 */
   private Edit(e: ActionData<EditParam>) {
-    if(GameParams.isOwner) return;
-    
+    if (GameParams.isOwner && !g.game.isSkipping) return;
+
     if (e.param.type == "Size") {
-      this.size.width = e.param.data[0];
-      this.size.height = e.param.data[1];
+      this.pieceSize.width = e.param.data[0];
+      this.pieceSize.height = e.param.data[1];
       this.EditInfoUpdate();
     } else {
-      if(GameParams.isServer) return;
+      if (GameParams.isServer) return;
       this.puzzleOrigin = { x: e.param.data[0], y: e.param.data[1] };
       this.border.x = this.puzzleOrigin.x;
       this.border.y = this.puzzleOrigin.y;
@@ -187,71 +276,58 @@ export class CreatePuzzle {
 
   /** パズル情報更新 */
   private EditInfoUpdate() {
-    this.count.x = Math.floor(this.preview.width / this.size.width);
-    this.count.y = Math.floor(this.preview.height / this.size.height);
-    this.sum = this.count.x * this.count.y;
-    this.puzzleSize.width = this.count.x * this.size.width;
-    this.puzzleSize.height = this.count.y * this.size.height;
+    this.matrix.x = Math.floor(this.preview.width / this.pieceSize.width);
+    this.matrix.y = Math.floor(this.preview.height / this.pieceSize.height);
+    this.sum = this.matrix.x * this.matrix.y;
+    this.puzzleSize.width = this.matrix.x * this.pieceSize.width;
+    this.puzzleSize.height = this.matrix.y * this.pieceSize.height;
     this.puzzleOrigin.x = Math.floor((this.preview.width - this.puzzleSize.width) / 2);
     this.puzzleOrigin.y = Math.floor((this.preview.height - this.puzzleSize.height) / 2);
 
-    this.pieceInfoLabel[0].text = `ピース数 ${this.sum} 枚`;
-    this.pieceInfoLabel[1].text = `行 ${this.count.x} 枚  列 ${this.count.y} 枚`;
-    this.pieceInfoLabel[2].text = `横 ${this.size.width} px  縦 ${this.size.height} px`;
-    this.pieceInfoLabel[0].invalidate();
-    this.pieceInfoLabel[1].invalidate();
-    this.pieceInfoLabel[2].invalidate();
+    this.pieceInfoLabel.text = `         -- 画像 --\n
+サイズ ${this.preview.width} x ${this.preview.height}\n
+容量 ${this.capacity / 1000} KB\n
+
+        -- ピース --\n
+合計 ${this.sum} 枚\n
+行 ${this.matrix.x} 枚  列 ${this.matrix.y} 枚\n
+横 ${this.pieceSize.width} px  縦 ${this.pieceSize.height} px\n`;
+    this.pieceInfoLabel.invalidate();
 
     // サーバーでは色々ないのでここで戻る
-    if (GameParams.isServer) return;
-    // 実際にパズルになる画像のエリア表示
-    this.border.x = this.puzzleOrigin.x;
-    this.border.y = this.puzzleOrigin.y;
-    this.border.width = this.puzzleSize.width;
-    this.border.height = this.puzzleSize.height;
-    this.border.modified();
+    if (!GameParams.isServer || GameParams.operation == "atsumaru"){
+      // 実際にパズルになる画像のエリア表示
+      this.border.x = this.puzzleOrigin.x;
+      this.border.y = this.puzzleOrigin.y;
+      this.border.width = this.puzzleSize.width;
+      this.border.height = this.puzzleSize.height;
+      this.border.modified();
+    }
   }
 
   /** パズル編集情報描画 */
   private EditInfo() {
     // 初期値を入れておく
-    this.size = { width: 60, height: 60 };
+    this.pieceSize = { width: 60, height: 60 };
 
-    const font = newFont("sans-serif", 40);
+    const font = newFont("sans-serif", 38);
     let x = 10, y = 10;
     const infoWaku = new g.FilledRect({
       scene: this.scene,
       parent: this.display,
-      cssColor: "rgba(255,127,39,0.6)",
+      cssColor: "rgba(176,247,204,0.8)",
       width: 430,
-      height: 180,
-      x: 830, y: 220
+      height: 360,
+      x: 830, y: 35
     })
-    this.pieceInfoLabel[0] = new Label({
+    this.pieceInfoLabel = new Label({
       scene: this.scene, font,
       parent: infoWaku,
-      text: "ピース数 XXX 枚",
-      textAlign: "center",
+      text: "         -- 画像 --\n\nサイズ XXXX x XXXX\n\n容量 XXX KB\n\n\n        -- ピース --\n\n合計 XXX 枚\n\n行 XXX 枚  列 XXX 枚\n\n横 XX px  縦 XX px\n",
+      lineGap: -17,
       width: infoWaku.width,
       x, y
     });
-    y += 60;
-    this.pieceInfoLabel[1] = new Label({
-      scene: this.scene, font,
-      parent: infoWaku,
-      text: "行 XX 枚  列 XX 枚",
-      width: infoWaku.width,
-      x, y
-    });
-    y += 50;
-    this.pieceInfoLabel[2] = new Label({
-      scene: this.scene, font,
-      parent: infoWaku,
-      text: "横 XX px  縦 XX px",
-      width: infoWaku.width,
-      x, y
-    });
-
   }
 
   /** 画像共有後に生主にだけ表示するUI */
@@ -260,7 +336,7 @@ export class CreatePuzzle {
     const back = new g.FilledRect({
       scene,
       parent: this.display,
-      cssColor: "rgba(255,127,39,0.6)",
+      cssColor: "rgba(0,194,78,0.8)",
       height: 200,
       width: 600,
       x: 220, y: 500
@@ -271,7 +347,6 @@ export class CreatePuzzle {
       font,
       text: "      ピースサイズ変更\n横幅\n縦幅",
       lineGap: 10,
-      // textAlign: "center",
       width: back.width
     });
 
@@ -284,24 +359,48 @@ export class CreatePuzzle {
       x: 120
     };
 
-    const sliderW = new Slider({ max: 200, y: 64, ...sliderParam });
+    const sliderW = new Slider({ ...sliderParam, max: 200, y: 64 });
     sliderW.onValueChange.add(n => {
-      this.size.width = Math.floor(n);
-      this.EditInfoUpdate();
+      if (this.isEdit) {
+        this.pieceSize.width = Math.floor(n);
+        this.EditInfoUpdate();
+      }
     });
-    sliderW.onBarDown.add(n =>
-      this.scene.send(new Edit({ type: "Size", data: [Math.floor(n), this.size.height] })));
-    sliderW.onSliderUp.add(n =>
-      this.scene.send(new Edit({ type: "Size", data: [Math.floor(n), this.size.height] })));
-    const sliderH = new Slider({ max: 200, y: 133, ...sliderParam });
+    sliderW.onBarDown.add(n => {
+      if (this.isEdit)
+        this.scene.send(new Edit({ type: "Size", data: [Math.floor(n), this.pieceSize.height] }))
+    });
+
+    sliderW.onSliderUp.add(n => {
+      if (this.isEdit)
+        this.scene.send(new Edit({ type: "Size", data: [Math.floor(n), this.pieceSize.height] }))
+    });
+    const sliderH = new Slider({ ...sliderParam, max: 200, y: 133 });
     sliderH.onValueChange.add(n => {
-      this.size.height = Math.floor(n);
-      this.EditInfoUpdate();
+      if (this.isEdit) {
+        this.pieceSize.height = Math.floor(n);
+        this.EditInfoUpdate();
+      }
     });
-    sliderH.onBarDown.add(n =>
-      this.scene.send(new Edit({ type: "Size", data: [this.size.width, Math.floor(n)] })));
-    sliderH.onSliderUp.add(n =>
-      this.scene.send(new Edit({ type: "Size", data: [this.size.width, Math.floor(n)] })));
+    sliderH.onBarDown.add(n => {
+      if (this.isEdit)
+        this.scene.send(new Edit({ type: "Size", data: [this.pieceSize.width, Math.floor(n)] }))
+    });
+    sliderH.onSliderUp.add(n => {
+      if (this.isEdit)
+        this.scene.send(new Edit({ type: "Size", data: [this.pieceSize.width, Math.floor(n)] }))
+    });
+
+    const startBtn = new g.Sprite({
+      scene, parent: this.display, src: scene.asset.getImageById("playBtn"), x: 1080, y: 597, touchable: true
+    })
+
+    startBtn.onPointDown.add(() => {
+      if (this.matrix.x >= 2 && this.matrix.y >= 2 && this.isEdit) {
+        this.isEdit = false;
+        scene.send(new ChangePage({ page: "S" }))
+      }
+    });
   }
 
   /** ファイルをドラッグアンドドロップされた */
@@ -311,11 +410,23 @@ export class CreatePuzzle {
 
     const fr = new FileReader();
     fr.readAsArrayBuffer(e.dataTransfer.files[0]);
+
     fr.onload = e => {
       const arrayB = <ArrayBuffer>e.target.result;
-      ConvertBase64(arrayB).then(params => {
-        this.dropData = params;
-        this.CreateImage(params);
+
+      ConvertJpgImage(arrayB).then(id => {
+        let jpgByteChars = "";
+        const img = id;
+        const jpg = encode(img);
+        for (let i = 0; i < jpg.data.length; i++) {
+          jpgByteChars += (String.fromCharCode(jpg.data[i]));
+        }
+        this.dropData = {
+          jpgByteChars,
+          width: id.width,
+          height: id.height
+        };
+        this.CreateImage(this.dropData);
       });
     }
   }
@@ -329,7 +440,7 @@ export class CreatePuzzle {
       cssColor: "#00C24E",
       height: 100,
       width: 160,
-      x: 10, y: 500,
+      x: 20, y: 500,
       touchable: true
     });
     new Label({
@@ -338,7 +449,7 @@ export class CreatePuzzle {
       font: newFont("sans-serif", 60, "white"),
       text: "戻る",
       width: back.width,
-      x: 30, y: 15
+      x: 20, y: 10
     });
     back.onPointDown.add(() => {
       if (g.game.isSkipping) return;
@@ -350,24 +461,24 @@ export class CreatePuzzle {
       parent: this.display,
       cssColor: "#00C24E",
       height: 100,
-      width: 350,
-      x: 250, y: 500,
+      width: 400,
+      x: 250, y: 550,
       touchable: true
     });
     new Label({
       scene,
       parent: this.shareBtn,
       font: newFont("sans-serif", 50, "white"),
-      text: "この画像にする",
+      text: " この画像にする",
       width: this.shareBtn.width,
-      y: 10
+      y: 15
     });
     this.shareBtn.onPointDown.add(() => {
       if (g.game.isSkipping) return;
       if (this.dropData != undefined) {
-        removeDropFile();
-        this.SharedLiverOnlyUI();
-        scene.send(new ShareImage(this.dropData));
+        // 最低2x2、最小40pxのため、最小画像サイズは80x80
+        if (this.preview.width >= 80 && this.preview.height >= 80)
+          scene.send(new ShareImage(this.dropData));
       }
     });
   }

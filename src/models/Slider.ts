@@ -31,8 +31,8 @@ export class Slider {
 
   constructor(params: SliderParams) {
     const display = new g.E({
-      touchable: false,
-      ...params
+      ...params,
+      touchable: false
     });
     this.display = display;
     const scene = display.scene;

@@ -7,6 +7,16 @@ export class Image {
   height: number;
   // @ts-ignore
   data: Uint8Array;
+
+
+  constructor(imageData?: ImageData) {
+    if(imageData != undefined){
+      this.width = imageData.width;
+      this.height = imageData.height;
+      this.data = new Uint8Array(imageData.data);
+    }
+  }
+
   getPixel(x: number, y: number): Pixel {
     const index = x + (y * this.width);
     const rntVal: Pixel = {

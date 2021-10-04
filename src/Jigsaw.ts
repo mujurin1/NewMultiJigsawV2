@@ -483,7 +483,7 @@ export class Jigsaw {
       this.uiLayer.result.draw(this.players, this.samePlayerID(lasetPlayerID));
       this.uiLayer.result.show();
       // this.uiLayer.info.stopTimer();
-    } else if(GameParams.operation == "atsumaru") {
+    } else if(GameParams.operation == "atsumaru" && this.pazzleID != -1) {
       const time = this.uiLayer.info.time;
       // レベル1  1時間23分45秒 => -3_001_23_45
       // レベル3 13時間00分01秒 => -1_013_00_01
