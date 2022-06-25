@@ -4,7 +4,7 @@ import { Image as JpgImage } from "./jpeg/image";
 
 /**
  * `Label` のサイズを横幅に合わせる
- * `label` の `widthAutoAdjust` が `true` でないといけない  
+ * `label` の `widthAutoAdjust` が `true` でないといけない\
  * `label` の `lineBreak` が `false` でないといけない
  * @param label ラベル
  * @param width 合わせる横幅
@@ -47,7 +47,7 @@ export function spriteSet(spr: g.E, wid: number, hei: number) {
 
 /**
  * `Label` のサイズを縦幅に合わせる
- * `label` の `widthAutoAdjust` が `false` でないといけない  
+ * `label` の `widthAutoAdjust` が `false` でないといけない\
  * `label` の `lineBreak` が `true` でないといけない
  * @param label ラベル
  * @param width 合わせる縦幅

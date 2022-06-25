@@ -2,7 +2,7 @@ import { PieceScene } from "../PieceScene";
 import { Piece } from "./Piece";
 
 /**
- * 経過時間を測る  
+ * 経過時間を測る\
  * タイマースタート時間からの経過時間で計算する
  */
 export class StopWatch {

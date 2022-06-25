@@ -4,8 +4,8 @@ import { ActionData, Action } from "./Server";
 
 
 /**
- * 各クライアントに１つだけ存在する  
- * サーバーからのイベントを受け取る  
+ * 各クライアントに１つだけ存在する\
+ * サーバーからのイベントを受け取る\
  * サーバーへイベントを送る
  */
 export abstract class SceneEx extends g.Scene {
@@ -28,7 +28,7 @@ export abstract class SceneEx extends g.Scene {
   }
 
   public addReceiveMethod(param: { type: string, event: Action<any> }, owner?: any) {
-    this.ReceiveEvent.push({owner, ...param});
+    this.ReceiveEvent.push({ owner, ...param });
   }
 
   public removeReceiveMethod(param: { type: string, event: Action<any> }, owner?: any) {

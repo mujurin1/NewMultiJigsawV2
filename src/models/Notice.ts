@@ -71,8 +71,8 @@ export abstract class Notice<NoticeContent> {
   protected abstract changeContext(context: NoticeContent): void;
 
   /**
-   * 通知パネルを表示するイベント  
-   * scene.onUpdate にセットされる  
+   * 通知パネルを表示するイベント\
+   * scene.onUpdate にセットされる\
    * 画面外からゆっくり表示する等
    */
   private showing(): void {
@@ -92,8 +92,8 @@ export abstract class Notice<NoticeContent> {
 
 
   /**
-   * 通知パネルを非表示にするイベント  
-   * scene.onUpdate にセットされる  
+   * 通知パネルを非表示にするイベント\
+   * scene.onUpdate にセットされる\
    * 画面外へゆっくり消える等
    */
   private hiding(): void {

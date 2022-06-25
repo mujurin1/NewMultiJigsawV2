@@ -9,7 +9,7 @@ export interface PlayerParam {
 export class Player {
   /** ニコニコアカウントID */
   // public readonly userID: string;
-  // /**g.PlayerID とは違うオリジナルな値  
+  // /**g.PlayerID とは違うオリジナルな値\
   //  * ニコニコアカウントIDではない
   //  */
   public readonly playerID: string;

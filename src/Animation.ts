@@ -45,11 +45,11 @@ export class Animation {
   /**
    * アニメーションを停止する。
    */
-   public  stop() {
+  public stop() {
     this.animationg = false;
     this.scene.onUpdate.remove(this.confettiAnimation, this);
-    for(let c of this._confittis) {
-      if(c.destroyed()) continue;
+    for (let c of this._confittis) {
+      if (c.destroyed()) continue;
       c.destroy();
     }
     this._confittis = new Array();
@@ -59,11 +59,11 @@ export class Animation {
    * 紙吹雪のアニメーション。
    */
   private confettiAnimation(): void {
-    if(g.game.isSkipping) return;
-    if(!this.animationg) return;
+    if (g.game.isSkipping) return;
+    if (!this.animationg) return;
 
     this._confettiMabiku = ++this._confettiMabiku % 3;
-    if(this._confettiMabiku != 0) return;
+    if (this._confettiMabiku != 0) return;
 
     const co = this.createConfetti(random(0, g.game.width), -5);
     const coE = this.createConfettiEntity(co, true);
@@ -165,7 +165,7 @@ export class Animation {
 }
 
 /**
- * `min` 以上 `max` 以下の乱数を返す。  
+ * `min` 以上 `max` 以下の乱数を返す。\
  * 乱数は環境によって変わるので、グローバルでは使うな。
  * @param min 最低値
  * @param max 最高値

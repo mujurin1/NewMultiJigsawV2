@@ -2,7 +2,7 @@ import { PazzleAsset, PzlDifficulty } from "../models/AssetManager";
 import { PieceScene } from "../PieceScene";
 
 /**
- * 切り抜くのに必要な情報  
+ * 切り抜くのに必要な情報\
  * `size` は `image` のサイズの約数（割り切れる値）にすること
  */
 export interface CutParam {
@@ -59,7 +59,7 @@ export function pieceCut(params: CutParam): CreatePazzleParam {
     width: previewSrc.width - pzlDif.origin.x,
     height: previewSrc.height - pzlDif.origin.y
   }
-  /**origin からピースをはみ出ないように最大数並べた領域のサイズ  
+  /**origin からピースをはみ出ないように最大数並べた領域のサイズ\
    * つまり、パズルにするプレビューのサイズ
   */
   const previewSize: g.CommonSize = {

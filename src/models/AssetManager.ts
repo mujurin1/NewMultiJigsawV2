@@ -93,7 +93,7 @@ export interface PazzleAsset {
   /** プレビュー画像のスプライト */
   preview: g.Sprite;
   /**
-   * パズルの難易度３つ  
+   * パズルの難易度３つ\
    * 0:簡単  1:普通  2:難しい
    */
   difficulty: PzlDifficulty[];

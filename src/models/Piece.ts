@@ -55,11 +55,11 @@ export class Piece extends g.Sprite {
       srcX: params.createParam.cutInfo[params.pieceID].x,
       srcY: params.createParam.cutInfo[params.pieceID].y,
       width: params.createParam.cutInfo[params.pieceID].width,
-      height: params.createParam.cutInfo[params.pieceID].height/1,
+      height: params.createParam.cutInfo[params.pieceID].height / 1,
       touchable: true,
       ...params
     });
-    
+
     this.jigsaw = params.jigsaw;
     this.pieceID = params.pieceID;
     this.connects = params.createParam.connectIds[this.pieceID];
@@ -97,7 +97,7 @@ export class Piece extends g.Sprite {
   }
 
   // /**
-  //    ピースを持ち上げるイベント  
+  //    ピースを持ち上げるイベント\
   //    この端末のプレイヤーが参加してなければ呼ばれない
   //  */
   // private PickEvent(e: g.PointDownEvent) {

@@ -39,7 +39,7 @@ export class Title {
   /** ゲームを開始しようとした時に呼ばれる */
   private readonly startJigsawCallback: () => void;
 
-  /** info パズルの情報  
+  /** info パズルの情報\
    * cihldren[
    *   0: タイトルの背景画像.children[タイトルテキスト],
    *   1: レベル１背景.children[レベル１テキスト],
@@ -50,7 +50,7 @@ export class Title {
    */
   private readonly info: g.E;
   /**
-   * 参加者数情報  
+   * 参加者数情報\
    * joinCnt.children[0] == 参加者数テキスト
    */
   public readonly joinCnt: g.E;
