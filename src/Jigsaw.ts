@@ -7,9 +7,10 @@ import { ConnectPieceParam, FitPieceParam } from "./events/piece";
 import { PlayingUI } from "./PlayingUI";
 import { GameParams } from "./params";
 import { Animation } from "./Animation";
-import { ErrorNotice, NomalNotice, Notice } from "./models/notice";
 import { ServerErrorParam } from "./eoc/ErrorMessage";
 import { ScoreBoard } from "./ScoreBoard";
+import { NoticeViewer } from "./models/notice";
+import { ErrorNoticeCard, NormalNoticeCard } from "./models/NoticeCardCreats";
 
 export interface JigsawParam {
   scene: PieceScene,
@@ -26,8 +27,7 @@ export class Jigsaw {
   /** プレイヤー配列 */
   public readonly players: Player[] = [];
   /** 通知用 */
-  private readonly nomalNotice: NomalNotice;
-  private readonly errorNotice: ErrorNotice;
+  private readonly noticeViewer: NoticeViewer;
 
   /** この端末のプレイヤーが参加ボタンを押して JoinPlayer イベントが来るのを待っている間 True */
   public isJoinWait: boolean = false;
@@ -82,8 +82,7 @@ export class Jigsaw {
 
   constructor(params: JigsawParam) {
     this.scene = params.scene;
-    this.nomalNotice = new NomalNotice(this.scene);
-    this.errorNotice = new ErrorNotice(this.scene);
+    this.noticeViewer = new NoticeViewer(this.scene, 5000);
     this.camera = new g.Camera2D({
       width: g.game.width,
       height: g.game.height,
@@ -98,7 +97,7 @@ export class Jigsaw {
   /** サーバーでエラーが発生した時に呼ばれる */
   public serverError(params: ServerErrorParam) {
     console.log(`SERVER ERROR!!\n${params.message}`);
-    this.errorNotice.show(params.message);
+    this.noticeViewer.addNoticeCard(new ErrorNoticeCard(this.scene, params.message, this.scene.asset.getAudioById("voice_outer")));
   }
 
   /**
@@ -229,8 +228,7 @@ export class Jigsaw {
         this.scoreBoard.show(this.pazzleID + 1, this.level);
       }
     }
-    this.uiLayer.display.append(this.nomalNotice.display);
-    this.uiLayer.display.append(this.errorNotice.display);
+    this.uiLayer.display.append(this.noticeViewer.display);
 
     // ピースの縦横列数を計算
     this.pieceCol = 2;
@@ -247,7 +245,7 @@ export class Jigsaw {
       for (let i = 1; i <= this.pieceCol; i++) if (!this.pieces[this.pieces.length - i].isFit) return;
       this.isAlignOuter = true;
       if (this.fitCount != this.pieces.length)
-        this.nomalNotice.show({ text: "外周完成！", audio: this.scene.asset.getAudioById("voice_outer") });
+        this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "外周完成！", this.scene.asset.getAudioById("voice_outer")));
       this.noticeEvent.remove(alignOuter, this);
       this.noticeEvent.remove(alignTop, this);
       this.noticeEvent.remove(alignLeft, this);
@@ -258,25 +256,25 @@ export class Jigsaw {
     const alignTop = () => {
       if (this.isAlignOuter) return;
       for (let i = 0; i < this.pieceCol; i++) if (!this.pieces[i].isFit) return;
-      this.nomalNotice.show({ text: "上端完成！", audio: this.scene.asset.getAudioById("voice_top") });
+      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "上端完成！", this.scene.asset.getAudioById("voice_top")));
       this.noticeEvent.remove(alignTop, this);
     }
     const alignLeft = () => {
       if (this.isAlignOuter) return;
       for (let i = 0; i < this.pieces.length; i += this.pieceCol) if (!this.pieces[i].isFit) return;
-      this.nomalNotice.show({ text: "左端完成！", audio: this.scene.asset.getAudioById("voice_left") });
+      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "左端完成！", this.scene.asset.getAudioById("voice_left")));
       this.noticeEvent.remove(alignLeft, this);
     }
     const alignRight = () => {
       if (this.isAlignOuter) return;
       for (let i = this.pieceCol - 1; i < this.pieces.length; i += this.pieceCol) if (!this.pieces[i].isFit) return;
-      this.nomalNotice.show({ text: "右端完成！", audio: this.scene.asset.getAudioById("voice_right") });
+      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "右端完成！", this.scene.asset.getAudioById("voice_right")));
       this.noticeEvent.remove(alignRight, this);
     }
     const alignBottom = () => {
       if (this.isAlignOuter) return;
       for (let i = 1; i <= this.pieceCol; i++) if (!this.pieces[this.pieces.length - i].isFit) return;
-      this.nomalNotice.show({ text: "下端完成！", audio: this.scene.asset.getAudioById("voice_bottom") });
+      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "下端完成！", this.scene.asset.getAudioById("voice_bottom")));
       this.noticeEvent.remove(alignBottom, this);
     }
     // 辺ごとの通知は100ピースを超えたパズルのみ
@@ -288,15 +286,15 @@ export class Jigsaw {
     }
     const per25 = () => {
       if (this.fitPer >= 25) {
-        this.nomalNotice.show({ text: "２５％完成！", audio: this.scene.asset.getAudioById("voice_25") });
+        this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "２５％完成！", this.scene.asset.getAudioById("voice_25")));
         this.noticeEvent.remove(per25, this);
         const per50 = () => {
           if (this.fitPer >= 50) {
-            this.nomalNotice.show({ text: "５０％完成！", audio: this.scene.asset.getAudioById("voice_50") });
+            this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "５０％完成！", this.scene.asset.getAudioById("voice_50")));
             this.noticeEvent.remove(per50, this);
             const per75 = () => {
               if (this.fitPer >= 75) {
-                this.nomalNotice.show({ text: "７５％完成！", audio: this.scene.asset.getAudioById("voice_75") });
+                this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "７５％完成！", this.scene.asset.getAudioById("voice_75")));
                 this.noticeEvent.remove(per75, this);
               }
             }
@@ -483,7 +481,7 @@ export class Jigsaw {
       this.uiLayer.result.draw(this.players, this.samePlayerID(lasetPlayerID));
       this.uiLayer.result.show();
       // this.uiLayer.info.stopTimer();
-    } else if(GameParams.operation == "atsumaru" && this.pazzleID != -1) {
+    } else if (GameParams.operation == "atsumaru" && this.pazzleID != -1) {
       const time = this.uiLayer.info.time;
       // レベル1  1時間23分45秒 => -3_001_23_45
       // レベル3 13時間00分01秒 => -1_013_00_01

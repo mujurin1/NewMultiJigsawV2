@@ -1,6 +1,8 @@
 import { PieceScene } from "./PieceScene";
 import { GameParams } from "./params";
 import { PieceServer } from "./PieceServer";
+import { NoticeViewer } from "./models/notice";
+import { ErrorNoticeCard, NormalNoticeCard, } from "./models/NoticeCardCreats";
 
 
 function main(args: g.GameMainParameterObject): void {
@@ -37,6 +39,33 @@ function start(): g.Scene {
   if (GameParams.isServer) {
     g.game.vars.server = new PieceServer({ scene });
   }
+
+  scene.setTimeout(() => {
+
+    const viewer = new NoticeViewer(scene, 5000);
+    viewer.addNoticeCard(
+      new ErrorNoticeCard(scene, "voice_25", scene.asset.getAudioById("voice_25")));
+    viewer.addNoticeCard(
+      new NormalNoticeCard(scene, "voice_50", scene.asset.getAudioById("voice_50")));
+    viewer.addNoticeCard(
+      new ErrorNoticeCard(scene, "voice_8888", scene.asset.getAudioById("voice_8888")));
+    viewer.addNoticeCard(
+      new NormalNoticeCard(scene, "voice_75", scene.asset.getAudioById("voice_75")));
+
+    scene.append(viewer.display);
+
+    scene.setTimeout(() => {
+
+      viewer.stop();
+
+      scene.setTimeout(() => {
+        viewer.resume();
+      }, 2000);
+
+    }, 1000);
+
+  }, 1000);
+
   return scene;
 }
 

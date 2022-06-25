@@ -72,139 +72,281 @@
 		},
 		"crown_0": {
 			"type": "image",
+			"path": "image/crown_0.png",
 			"width": 90,
-			"height": 60,
-			"path": "image/crown_0.png"
+			"height": 60
 		},
 		"crown_1": {
 			"type": "image",
+			"path": "image/crown_1.png",
 			"width": 60,
-			"height": 40,
-			"path": "image/crown_1.png"
+			"height": 40
 		},
 		"crown_2": {
 			"type": "image",
+			"path": "image/crown_2.png",
 			"width": 60,
-			"height": 40,
-			"path": "image/crown_2.png"
+			"height": 40
 		},
 		"crown_3": {
 			"type": "image",
+			"path": "image/crown_3.png",
 			"width": 60,
-			"height": 40,
-			"path": "image/crown_3.png"
+			"height": 40
 		},
 		"infoBtn": {
 			"type": "image",
+			"path": "image/infoBtn.png",
 			"width": 96,
-			"height": 96,
-			"path": "image/infoBtn.png"
+			"height": 96
 		},
 		"joinBtn": {
 			"type": "image",
+			"path": "image/joinBtn.png",
 			"width": 192,
-			"height": 108,
-			"path": "image/joinBtn.png"
+			"height": 108
 		},
 		"left": {
 			"type": "image",
+			"path": "image/left.png",
 			"width": 192,
-			"height": 108,
-			"path": "image/left.png"
+			"height": 108
 		},
 		"playBtn": {
 			"type": "image",
+			"path": "image/playBtn.png",
 			"width": 192,
-			"height": 108,
-			"path": "image/playBtn.png"
+			"height": 108
 		},
 		"previewBtn": {
 			"type": "image",
+			"path": "image/previewBtn.png",
 			"width": 100,
-			"height": 100,
-			"path": "image/previewBtn.png"
+			"height": 100
 		},
 		"result": {
 			"type": "image",
+			"path": "image/result.jpg",
 			"width": 870,
-			"height": 690,
-			"path": "image/result.jpg"
+			"height": 690
 		},
 		"resultBtn": {
 			"type": "image",
+			"path": "image/resultBtn.png",
 			"width": 100,
-			"height": 100,
-			"path": "image/resultBtn.png"
+			"height": 100
 		},
 		"right": {
 			"type": "image",
+			"path": "image/right.png",
 			"width": 192,
-			"height": 108,
-			"path": "image/right.png"
+			"height": 108
 		},
 		"sanka_nin": {
 			"type": "image",
+			"path": "image/sanka_nin.png",
 			"width": 380,
-			"height": 80,
-			"path": "image/sanka_nin.png"
+			"height": 80
 		},
 		"select_E": {
 			"type": "image",
+			"path": "image/select_E.png",
 			"width": 380,
-			"height": 80,
-			"path": "image/select_E.png"
+			"height": 80
 		},
 		"select_H": {
 			"type": "image",
+			"path": "image/select_H.png",
 			"width": 380,
-			"height": 80,
-			"path": "image/select_H.png"
+			"height": 80
 		},
 		"select_N": {
 			"type": "image",
+			"path": "image/select_N.png",
 			"width": 380,
-			"height": 80,
-			"path": "image/select_N.png"
+			"height": 80
 		},
 		"setting": {
 			"type": "image",
+			"path": "image/setting.png",
 			"width": 96,
-			"height": 96,
-			"path": "image/setting.png"
+			"height": 96
 		},
 		"titleBtn": {
 			"type": "image",
+			"path": "image/titleBtn.png",
 			"width": 291,
-			"height": 108,
-			"path": "image/titleBtn.png"
+			"height": 108
 		},
 		"title_back": {
 			"type": "image",
+			"path": "image/title_back.png",
 			"width": 380,
-			"height": 80,
-			"path": "image/title_back.png"
+			"height": 80
 		},
 		"visibleBtn": {
 			"type": "image",
+			"path": "image/visibleBtn.png",
 			"width": 96,
-			"height": 96,
-			"path": "image/visibleBtn.png"
+			"height": 96
 		},
 		"zoomIn": {
 			"type": "image",
+			"path": "image/zoomIn.png",
 			"width": 100,
-			"height": 100,
-			"path": "image/zoomIn.png"
+			"height": 100
 		},
 		"zoomOut": {
 			"type": "image",
+			"path": "image/zoomOut.png",
 			"width": 100,
-			"height": 100,
-			"path": "image/zoomOut.png"
+			"height": 100
+		},
+		"assets/!/00.png": {
+			"type": "image",
+			"path": "assets/!/00.png",
+			"width": 300,
+			"height": 300
+		},
+		"assets/!/01.png": {
+			"type": "image",
+			"path": "assets/!/01.png",
+			"width": 300,
+			"height": 300
+		},
+		"assets/antelope.jpg": {
+			"type": "image",
+			"path": "assets/antelope.jpg",
+			"width": 1280,
+			"height": 780
+		},
+		"assets/architecture.jpg": {
+			"type": "image",
+			"path": "assets/architecture.jpg",
+			"width": 1920,
+			"height": 1439
+		},
+		"assets/audience.jpg": {
+			"type": "image",
+			"path": "assets/audience.jpg",
+			"width": 1920,
+			"height": 884
+		},
+		"assets/beach.jpg": {
+			"type": "image",
+			"path": "assets/beach.jpg",
+			"width": 1280,
+			"height": 960
+		},
+		"assets/cake.jpg": {
+			"type": "image",
+			"path": "assets/cake.jpg",
+			"width": 1280,
+			"height": 720
+		},
+		"assets/cockpit.jpg": {
+			"type": "image",
+			"path": "assets/cockpit.jpg",
+			"width": 1920,
+			"height": 1209
+		},
+		"assets/color-fan.jpg": {
+			"type": "image",
+			"path": "assets/color-fan.jpg",
+			"width": 1920,
+			"height": 1280
+		},
+		"assets/duck.jpg": {
+			"type": "image",
+			"path": "assets/duck.jpg",
+			"width": 1280,
+			"height": 853
+		},
+		"assets/excavators.jpg": {
+			"type": "image",
+			"path": "assets/excavators.jpg",
+			"width": 1280,
+			"height": 416
+		},
+		"assets/firewood.jpg": {
+			"type": "image",
+			"path": "assets/firewood.jpg",
+			"width": 1280,
+			"height": 853
+		},
+		"assets/fox.jpg": {
+			"type": "image",
+			"path": "assets/fox.jpg",
+			"width": 1280,
+			"height": 851
+		},
+		"assets/frangipani.jpg": {
+			"type": "image",
+			"path": "assets/frangipani.jpg",
+			"width": 1280,
+			"height": 853
+		},
+		"assets/japan.jpg": {
+			"type": "image",
+			"path": "assets/japan.jpg",
+			"width": 1920,
+			"height": 1076
+		},
+		"assets/latte-art.jpg": {
+			"type": "image",
+			"path": "assets/latte-art.jpg",
+			"width": 1280,
+			"height": 853
+		},
+		"assets/living-room.jpg": {
+			"type": "image",
+			"path": "assets/living-room.jpg",
+			"width": 1920,
+			"height": 1280
+		},
+		"assets/noodle-soup.jpg": {
+			"type": "image",
+			"path": "assets/noodle-soup.jpg",
+			"width": 1280,
+			"height": 960
+		},
+		"assets/paraglider.jpg": {
+			"type": "image",
+			"path": "assets/paraglider.jpg",
+			"width": 1280,
+			"height": 855
+		},
+		"assets/skyscrapers.jpg": {
+			"type": "image",
+			"path": "assets/skyscrapers.jpg",
+			"width": 1280,
+			"height": 853
+		},
+		"assets/supreme.jpg": {
+			"type": "image",
+			"path": "assets/supreme.jpg",
+			"width": 1280,
+			"height": 852
+		},
+		"assets/watch.jpg": {
+			"type": "image",
+			"path": "assets/watch.jpg",
+			"width": 1920,
+			"height": 1280
 		},
 		"Animation": {
 			"type": "script",
 			"path": "script/Animation.js",
+			"global": true
+		},
+		"CreateUserPazzle": {
+			"type": "script",
+			"path": "script/CreateUserPazzle.js",
+			"global": true
+		},
+		"ErrorMessage": {
+			"type": "script",
+			"path": "script/eoc/ErrorMessage.js",
 			"global": true
 		},
 		"SceneEx": {
@@ -232,6 +374,11 @@
 			"path": "script/events/player.js",
 			"global": true
 		},
+		"userPazzle": {
+			"type": "script",
+			"path": "script/events/userPazzle.js",
+			"global": true
+		},
 		"Jigsaw": {
 			"type": "script",
 			"path": "script/Jigsaw.js",
@@ -240,6 +387,26 @@
 		"funcs": {
 			"type": "script",
 			"path": "script/lib/funcs.js",
+			"global": true
+		},
+		"decoder": {
+			"type": "script",
+			"path": "script/lib/jpeg/decoder.js",
+			"global": true
+		},
+		"encoder": {
+			"type": "script",
+			"path": "script/lib/jpeg/encoder.js",
+			"global": true
+		},
+		"image": {
+			"type": "script",
+			"path": "script/lib/jpeg/image.js",
+			"global": true
+		},
+		"pixel": {
+			"type": "script",
+			"path": "script/lib/jpeg/pixel.js",
 			"global": true
 		},
 		"pieceCut": {
@@ -255,6 +422,21 @@
 		"AssetManager": {
 			"type": "script",
 			"path": "script/models/AssetManager.js",
+			"global": true
+		},
+		"BitmapImage": {
+			"type": "script",
+			"path": "script/models/BitmapImage.js",
+			"global": true
+		},
+		"notice": {
+			"type": "script",
+			"path": "script/models/notice.js",
+			"global": true
+		},
+		"NoticeCardCreats": {
+			"type": "script",
+			"path": "script/models/NoticeCardCreats.js",
 			"global": true
 		},
 		"Piece": {
@@ -275,6 +457,11 @@
 		"StopWatch": {
 			"type": "script",
 			"path": "script/models/StopWatch.js",
+			"global": true
+		},
+		"StrokeRect": {
+			"type": "script",
+			"path": "script/models/StrokeRect.js",
 			"global": true
 		},
 		"params": {
@@ -312,201 +499,19 @@
 			"path": "script/Result.js",
 			"global": true
 		},
-		"Title": {
-			"type": "script",
-			"path": "script/Title.js",
-			"global": true
-		},
-		"asset:f17d04": {
-			"type": "image",
-			"width": 300,
-			"height": 300,
-			"path": "assets/!/00.png"
-		},
-		"asset:a86239": {
-			"type": "image",
-			"width": 300,
-			"height": 300,
-			"path": "assets/!/01.png"
-		},
-		"asset:b6215c": {
-			"type": "text",
-			"path": "assets/!.txt"
-		},
-		"asset:5a240e": {
-			"type": "image",
-			"width": 1280,
-			"height": 780,
-			"path": "assets/antelope.jpg"
-		},
-		"asset:2be7e1": {
-			"type": "image",
-			"width": 1920,
-			"height": 1439,
-			"path": "assets/architecture.jpg"
-		},
-		"asset:ba46bf": {
-			"type": "image",
-			"width": 1920,
-			"height": 884,
-			"path": "assets/audience.jpg"
-		},
-		"asset:ec9f2a": {
-			"type": "image",
-			"width": 1280,
-			"height": 960,
-			"path": "assets/beach.jpg"
-		},
-		"asset:b37abb": {
-			"type": "image",
-			"width": 1280,
-			"height": 720,
-			"path": "assets/cake.jpg"
-		},
-		"asset:8b50c1": {
-			"type": "image",
-			"width": 1920,
-			"height": 1209,
-			"path": "assets/cockpit.jpg"
-		},
-		"asset:9dd095": {
-			"type": "image",
-			"width": 1920,
-			"height": 1280,
-			"path": "assets/color-fan.jpg"
-		},
-		"asset:ba2759": {
-			"type": "image",
-			"width": 1280,
-			"height": 853,
-			"path": "assets/duck.jpg"
-		},
-		"asset:354bb7": {
-			"type": "image",
-			"width": 1280,
-			"height": 416,
-			"path": "assets/excavators.jpg"
-		},
-		"asset:166b9c": {
-			"type": "image",
-			"width": 1280,
-			"height": 853,
-			"path": "assets/firewood.jpg"
-		},
-		"asset:fcae74": {
-			"type": "image",
-			"width": 1280,
-			"height": 851,
-			"path": "assets/fox.jpg"
-		},
-		"asset:febc81": {
-			"type": "image",
-			"width": 1280,
-			"height": 853,
-			"path": "assets/frangipani.jpg"
-		},
-		"asset:1d7cbd": {
-			"type": "image",
-			"width": 1920,
-			"height": 1076,
-			"path": "assets/japan.jpg"
-		},
-		"asset:67e90f": {
-			"type": "image",
-			"width": 1280,
-			"height": 853,
-			"path": "assets/latte-art.jpg"
-		},
-		"asset:35aeaf": {
-			"type": "image",
-			"width": 1920,
-			"height": 1280,
-			"path": "assets/living-room.jpg"
-		},
-		"asset:c5607e": {
-			"type": "image",
-			"width": 1280,
-			"height": 960,
-			"path": "assets/noodle-soup.jpg"
-		},
-		"asset:59ae0d": {
-			"type": "image",
-			"width": 1280,
-			"height": 855,
-			"path": "assets/paraglider.jpg"
-		},
-		"asset:59416e": {
-			"type": "image",
-			"width": 1280,
-			"height": 853,
-			"path": "assets/skyscrapers.jpg"
-		},
-		"asset:23e147": {
-			"type": "image",
-			"width": 1280,
-			"height": 852,
-			"path": "assets/supreme.jpg"
-		},
-		"asset:9283dc": {
-			"type": "image",
-			"width": 1920,
-			"height": 1280,
-			"path": "assets/watch.jpg"
-		},
-		"ErrorMessage": {
-			"type": "script",
-			"path": "script/eoc/ErrorMessage.js",
-			"global": true
-		},
-		"notice": {
-			"type": "script",
-			"path": "script/models/notice.js",
-			"global": true
-		},
 		"ScoreBoard": {
 			"type": "script",
 			"path": "script/ScoreBoard.js",
 			"global": true
 		},
-		"CreateUserPazzle": {
+		"Title": {
 			"type": "script",
-			"path": "script/CreateUserPazzle.js",
+			"path": "script/Title.js",
 			"global": true
 		},
-		"userPazzle": {
-			"type": "script",
-			"path": "script/events/userPazzle.js",
-			"global": true
-		},
-		"BitmapImage": {
-			"type": "script",
-			"path": "script/models/BitmapImage.js",
-			"global": true
-		},
-		"decoder": {
-			"type": "script",
-			"path": "script/lib/jpeg/decoder.js",
-			"global": true
-		},
-		"encoder": {
-			"type": "script",
-			"path": "script/lib/jpeg/encoder.js",
-			"global": true
-		},
-		"image": {
-			"type": "script",
-			"path": "script/lib/jpeg/image.js",
-			"global": true
-		},
-		"pixel": {
-			"type": "script",
-			"path": "script/lib/jpeg/pixel.js",
-			"global": true
-		},
-		"StrokeRect": {
-			"type": "script",
-			"path": "script/models/StrokeRect.js",
-			"global": true
+		"assets/!.txt": {
+			"type": "text",
+			"path": "assets/!.txt"
 		}
 	},
 	"moduleMainScripts": {
