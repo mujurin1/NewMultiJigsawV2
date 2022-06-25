@@ -55,10 +55,11 @@ export class Piece extends g.Sprite {
       srcX: params.createParam.cutInfo[params.pieceID].x,
       srcY: params.createParam.cutInfo[params.pieceID].y,
       width: params.createParam.cutInfo[params.pieceID].width,
-      height: params.createParam.cutInfo[params.pieceID].height,
+      height: params.createParam.cutInfo[params.pieceID].height/1,
       touchable: true,
       ...params
     });
+    
     this.jigsaw = params.jigsaw;
     this.pieceID = params.pieceID;
     this.connects = params.createParam.connectIds[this.pieceID];

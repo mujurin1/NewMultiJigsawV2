@@ -289,10 +289,12 @@ export function pieceCut(params: CutParam): CreatePazzleParam {
     putP.y += pzlDif.size.height + overlapH * 2;
   }
 
+  // Apple端末だと、画像の範囲外を参照すると透明な画像が変えるらしい
+  // 小数点以下ではみ出る可能性があるので、大きめに 2 だけ増やしておく
   const pane = new g.Pane({
     scene,
-    width: (piece_W_Cnt - 1) * (pzlDif.size.width + overlapW * 2) + pzlDif.size.width,
-    height: (piece_H_Cnt - 1) * (pzlDif.size.height + overlapH * 2) + pzlDif.size.height,
+    width: (piece_W_Cnt - 1) * (pzlDif.size.width + overlapW * 2) + pzlDif.size.width + 2,
+    height: (piece_H_Cnt - 1) * (pzlDif.size.height + overlapH * 2) + pzlDif.size.height + 2,
   });
   pane.append(view);
 

@@ -244,9 +244,9 @@ export class Title {
       font: this.fontB,
       width: 1000,
       height: 30,
-      text: "v 11.1\n最後のパズルはあなたの画像です",
+      text: "v 11.2\n最後のパズルはあなたの画像です。Apple端末でピースが消えるバグ修正",
       fontSize: 30,
-      x: 740,
+      x: 230,
       y: 650,
     });
 

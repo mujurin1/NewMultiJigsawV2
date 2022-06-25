@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
+    "nico": "npm run build && akashic serve -s nicolive",
+    "nico80": "npm run build && akashic serve -s nicolive --port 80",
     "build": "rimraf ./script && tsc && akashic-cli-scan asset script",
     "update": "akashic-cli-scan asset && akashic-cli-scan globalScripts",
     "lint": "eslint -c .eslintrc.js \"src/**/*.ts\" --fix",
