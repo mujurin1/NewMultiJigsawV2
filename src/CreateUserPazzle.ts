@@ -295,7 +295,7 @@ A.出来ません。ごめんなさい。\n
     this.pieceInfoLabel.invalidate();
 
     // サーバーでは色々ないのでここで戻る
-    if (!GameParams.isServer || GameParams.operation == "atsumaru"){
+    if (!GameParams.isServer || GameParams.operation == "atsumaru") {
       // 実際にパズルになる画像のエリア表示
       this.border.x = this.puzzleOrigin.x;
       this.border.y = this.puzzleOrigin.y;
@@ -347,13 +347,14 @@ A.出来ません。ごめんなさい。\n
       font,
       text: "      ピースサイズ変更\n横幅\n縦幅",
       lineGap: 10,
+      x: 7,
       width: back.width
     });
 
     const sliderParam = {
       scene,
       parent: back,
-      per: 0.5, min: 40,
+      per: 0.125, min: 40,
       gripWidth: 25,
       width: 460, height: 60,
       x: 120
