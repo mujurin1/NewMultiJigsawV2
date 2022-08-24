@@ -6,12 +6,12 @@
   "scripts": {
     "nico": "npm run build && akashic serve -s nicolive",
     "nico80": "npm run build && akashic serve -s nicolive --port 80",
+    "html": "npm run build && rimraf game.zip && akashic export html -o ./game.zip --atsumaru",
+    "zip": "npm run build && npm run build && rimraf game.zip && akashic export zip -o ./game.zip -s",
     "build": "rimraf ./script && tsc && akashic-cli-scan asset script",
     "update": "akashic-cli-scan asset && akashic-cli-scan globalScripts",
     "lint": "eslint -c .eslintrc.js \"src/**/*.ts\" --fix",
     "start": "akashic-sandbox .",
-    "export-zip": "rimraf game.zip && akashic-cli-export-zip -o game.zip -s",
-    "export-html": "rimraf game && akashic-cli-export-html -o game",
     "test": "jest"
   },
   "author": "",

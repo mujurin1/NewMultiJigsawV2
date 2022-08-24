@@ -4,13 +4,12 @@ import { AssetManager } from "./models/AssetManager";
 import { Asset, GameParams } from "./params";
 import { PieceScene } from "./PieceScene";
 
-
 export interface TitleParam {
-  scene: PieceScene,
-  assetManager: AssetManager,
-  changePazzleCallback: (s: boolean) => void,
-  changeDifficultyCallback: (n: number) => void,
-  startJigsawCallback: () => void
+  scene: PieceScene;
+  assetManager: AssetManager;
+  changePazzleCallback: (s: boolean) => void;
+  changeDifficultyCallback: (n: number) => void;
+  startJigsawCallback: () => void;
 }
 
 /**
@@ -64,7 +63,6 @@ export class Title {
   /** 縁取りフォントボーダー */
   private readonly fontB: g.Font;
 
-
   constructor(params: TitleParam) {
     const scene = params.scene;
     this.scene = scene;
@@ -96,16 +94,19 @@ export class Title {
       scene,
       parent: this.display,
       cssColor: "rgba(0,0,0)",
-      width: 770, height: 460,
-      x: 25, y: 35,
+      width: 770,
+      height: 460,
+      x: 25,
+      y: 35,
     });
-
 
     // ========================= パズルの情報 =========================
     this.info = new g.E({
       scene,
-      width: 380, height: 460,
-      x: 850, y: 35,
+      width: 380,
+      height: 460,
+      x: 850,
+      y: 35,
       parent: this.display,
     });
     // タイトルの背景画像
@@ -220,7 +221,8 @@ export class Title {
       scene,
       parent: this.display,
       src: scene.asset.getImageById("sanka_nin"),
-      x: 850, y: 435,
+      x: 850,
+      y: 435,
     });
     // 参加人数文字
     const joinCountText = new Label({
@@ -244,7 +246,7 @@ export class Title {
       font: this.fontB,
       width: 1000,
       height: 30,
-      text: "v 11.2\n最後のパズルはあなたの画像です。Apple端末でピースが消えるバグ修正",
+      text: "v 11.3    現在フィードバックを積極的に募集しています\nアツマールからフィードバックをお願いします",
       fontSize: 30,
       x: 230,
       y: 650,
@@ -256,9 +258,11 @@ export class Title {
         scene,
         parent: this.display,
         cssColor: "#00C24E",
-        x: 10, y: 602,
-        width: 192, height: 108,
-        touchable: true
+        x: 10,
+        y: 602,
+        width: 192,
+        height: 108,
+        touchable: true,
       });
       new Label({
         scene,
@@ -268,7 +272,7 @@ export class Title {
         textAlign: "center",
         anchorY: 0.5,
         y: 54,
-        width: 192
+        width: 192,
       });
       // なぜか () => score.display だと動かない
       ranking.onPointDown.add(() => {
@@ -308,14 +312,16 @@ export class Title {
         scene,
         parent: this.display,
         src: scene.asset.getImageById("left"),
-        x: 250, y: 550,
+        x: 250,
+        y: 540,
         touchable: true,
       });
       const right = new g.Sprite({
         scene,
         parent: this.display,
         src: scene.asset.getImageById("right"),
-        x: 500, y: 550,
+        x: 500,
+        y: 540,
         touchable: true,
       });
       const start = new g.Sprite({
@@ -323,14 +329,16 @@ export class Title {
         parent: this.display,
         src: scene.asset.getImageById("playBtn"),
         x: 950,
-        y: 550,
+        y: 540,
         touchable: true,
       });
       // それぞれクリックでグローバルイベントを発行する
       left.onPointDown.add(() => this.changePazzleCallback(false));
       right.onPointDown.add(() => this.changePazzleCallback(true));
       start.onPointDown.add(() => this.startJigsawCallback());
-    } else { /* リスナーにだけ表示するUIがあるならここへ */ }
+    } else {
+      /* リスナーにだけ表示するUIがあるならここへ */
+    }
 
     this.selectPzlID = -1;
     this.changePazzle(true);
@@ -383,7 +391,7 @@ export class Title {
         font: newFont("sans-serif", 90, "white"),
         text: " 好きな画像で遊ぶ",
         y: 100,
-        width: this.preview.width
+        width: this.preview.width,
       });
       new Label({
         scene: this.scene,
@@ -391,8 +399,8 @@ export class Title {
         font: newFont("sans-serif", 50, "white"),
         text: "（生主がPCの時のみ遊べます）\n\n    「開始」ボタンを押すと\n     別ページに移動します",
         y: 200,
-        width: this.preview.width
-      })
+        width: this.preview.width,
+      });
       this.preview.append(userPazzle);
 
       const infos = this.info.children;
@@ -414,8 +422,7 @@ export class Title {
 
       // プレビュー画像を変更する
       const selectPzl = assets.assets[this.selectPzlID];
-      if (!!this.preview.children)
-        this.preview.remove(this.preview.children[0]);
+      if (!!this.preview.children) this.preview.remove(this.preview.children[0]);
 
       this.preview.append(selectPzl.preview);
       spriteSet(selectPzl.preview, this.preview.width, this.preview.height);
@@ -438,5 +445,3 @@ export class Title {
     }
   }
 }
-
-

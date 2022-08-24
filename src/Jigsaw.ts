@@ -13,7 +13,7 @@ import { NoticeViewer } from "./models/notice";
 import { ErrorNoticeCard, NormalNoticeCard } from "./models/NoticeCardCreats";
 
 export interface JigsawParam {
-  scene: PieceScene,
+  scene: PieceScene;
 }
 
 export class Jigsaw {
@@ -31,7 +31,7 @@ export class Jigsaw {
 
   /** この端末のプレイヤーが参加ボタンを押して JoinPlayer イベントが来るのを待っている間 True */
   public isJoinWait: boolean = false;
-  /**自分のプレイヤー情報  
+  /**自分のプレイヤー情報
    * 参加してなければ undefined
    */
   public me: Player | undefined = undefined;
@@ -68,10 +68,14 @@ export class Jigsaw {
   /** 外周が完成したかどうか */
   private isAlignOuter: boolean = false;
 
-  public get cameraScale(): number { return this.camera.scaleX; }
-  public get pieceLimit(): g.CommonOffset { return { x: this.pieceLayer.width, y: this.pieceLayer.height }; }
+  public get cameraScale(): number {
+    return this.camera.scaleX;
+  }
+  public get pieceLimit(): g.CommonOffset {
+    return { x: this.pieceLayer.width, y: this.pieceLayer.height };
+  }
   /**
-   * display の原点と board の原点の差  
+   * display の原点と board の原点の差
    */
   public margin: g.CommonSize = { width: 0, height: 0 };
 
@@ -86,18 +90,19 @@ export class Jigsaw {
     this.camera = new g.Camera2D({
       width: g.game.width,
       height: g.game.height,
-      anchorX: null
+      anchorX: null,
     });
     this.display = new g.E({ scene: this.scene });
 
-    if (GameParams.operation == "atsumaru")
-      this.scoreBoard = new ScoreBoard(this.scene);
+    if (GameParams.operation == "atsumaru") this.scoreBoard = new ScoreBoard(this.scene);
   }
 
   /** サーバーでエラーが発生した時に呼ばれる */
   public serverError(params: ServerErrorParam) {
     console.log(`SERVER ERROR!!\n${params.message}`);
-    this.noticeViewer.addNoticeCard(new ErrorNoticeCard(this.scene, params.message, this.scene.asset.getAudioById("voice_outer")));
+    this.noticeViewer.addNoticeCard(
+      new ErrorNoticeCard(this.scene, params.message, this.scene.asset.getAudioById("voice_outer"))
+    );
   }
 
   /**
@@ -105,8 +110,7 @@ export class Jigsaw {
    */
   public startPazzle(params: CreatePazzleParam) {
     this.jigsawState = "Playing";
-    if (GameParams.operation == "atsumaru")
-      this.scoreBoard.display.remove();
+    if (GameParams.operation == "atsumaru") this.scoreBoard.display.remove();
     this.pazzleID = params.pazzleID;
     this.level = params.level;
 
@@ -119,7 +123,7 @@ export class Jigsaw {
       width: g.game.width,
       height: g.game.height,
       anchorX: null,
-      touchable: true
+      touchable: true,
     });
 
     // background, uiLayer をタッチした時だけカメラを動かしたいので、専用の値を設定してそれで判断する
@@ -133,7 +137,7 @@ export class Jigsaw {
       scene: this.scene,
       parent: this.display,
       width: preview.width * 3,
-      height: preview.height * 3
+      height: preview.height * 3,
     });
     this.display.append(this.uiLayer.display);
 
@@ -162,16 +166,18 @@ export class Jigsaw {
     const viewBtn = new g.FilledRect({
       scene: this.scene,
       cssColor: "white",
-      x: 1180, y: 630,
-      width: 96, height: 96,
+      x: 1180,
+      y: 630,
+      width: 96,
+      height: 96,
       opacity: 0.5,
       touchable: true,
-      hidden: true
+      hidden: true,
     });
     new g.Sprite({
       scene: this.scene,
       parent: viewBtn,
-      src: this.scene.asset.getImageById("visibleBtn")
+      src: this.scene.asset.getImageById("visibleBtn"),
     });
     this.scene.append(viewBtn);
     viewBtn.onPointDown.add(() => {
@@ -188,19 +194,6 @@ export class Jigsaw {
       this.background.show();
     });
 
-    // ピースの生成
-    for (let id = 0; id < params.cutInfo.length; id++) {
-      const piece = new Piece({
-        scene: this.scene,
-        jigsaw: this,
-        pieceID: id,
-        createParam: params
-      });
-      this.pieces.push(piece);
-      this.pieceLayer.append(piece);
-    }
-    this.randomLineUp();
-
     // this.pieceLayer.resizeTo(preview.width * 3, preview.height * 3);
     // this.pieceLayer.modified();
     this.board = new g.FilledRect({
@@ -210,23 +203,38 @@ export class Jigsaw {
       width: preview.width,
       height: preview.height,
       x: this.margin.width,
-      y: this.margin.height
+      y: this.margin.height,
     });
-    this.display.insertBefore(this.board, this.pieceLayer);
+    this.pieceLayer.append(this.board);
+
+    // ピースの生成
+    for (let id = 0; id < params.cutInfo.length; id++) {
+      const piece = new Piece({
+        scene: this.scene,
+        jigsaw: this,
+        pieceID: id,
+        createParam: params,
+      });
+      this.pieces.push(piece);
+      this.pieceLayer.append(piece);
+    }
+    this.randomLineUp();
 
     g.game.focusingCamera = this.camera;
     // カメラの初期拡大率・位置を設定
     this.camera.scale(this.pieceLayer.width / (this.camera.width + 0.5));
-    this.camera.moveTo(preview.width * this.camera.scaleX / 3, preview.height * this.camera.scaleX / 3);
+    this.camera.moveTo(
+      (preview.width * this.camera.scaleX) / 3,
+      (preview.height * this.camera.scaleX) / 3
+    );
 
     this.cameraModified();
-
 
     if (GameParams.operation == "atsumaru") {
       this.uiLayer.display.append(this.scoreBoard.display);
       this.uiLayer.showScoreBoard = () => {
         this.scoreBoard.show(this.pazzleID + 1, this.level);
-      }
+      };
     }
     this.uiLayer.display.append(this.noticeViewer.display);
 
@@ -241,42 +249,64 @@ export class Jigsaw {
       // 上、左、右、下の順で検査
       for (let i = 0; i < this.pieceCol; i++) if (!this.pieces[i].isFit) return;
       for (let i = 0; i < this.pieces.length; i += this.pieceCol) if (!this.pieces[i].isFit) return;
-      for (let i = this.pieceCol - 1; i < this.pieces.length; i += this.pieceCol) if (!this.pieces[i].isFit) return;
-      for (let i = 1; i <= this.pieceCol; i++) if (!this.pieces[this.pieces.length - i].isFit) return;
+      for (let i = this.pieceCol - 1; i < this.pieces.length; i += this.pieceCol)
+        if (!this.pieces[i].isFit) return;
+      for (let i = 1; i <= this.pieceCol; i++)
+        if (!this.pieces[this.pieces.length - i].isFit) return;
       this.isAlignOuter = true;
       if (this.fitCount != this.pieces.length)
-        this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "外周完成！", this.scene.asset.getAudioById("voice_outer")));
+        this.noticeViewer.addNoticeCard(
+          new NormalNoticeCard(
+            this.scene,
+            "外周完成！",
+            this.scene.asset.getAudioById("voice_outer")
+          )
+        );
       this.noticeEvent.remove(alignOuter, this);
       this.noticeEvent.remove(alignTop, this);
       this.noticeEvent.remove(alignLeft, this);
       this.noticeEvent.remove(alignRight, this);
       this.noticeEvent.remove(alignBottom, this);
-    }
+    };
     this.noticeEvent.add(alignOuter, this);
     const alignTop = () => {
       if (this.isAlignOuter) return;
       for (let i = 0; i < this.pieceCol; i++) if (!this.pieces[i].isFit) return;
-      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "上端完成！", this.scene.asset.getAudioById("voice_top")));
+      this.noticeViewer.addNoticeCard(
+        new NormalNoticeCard(this.scene, "上端完成！", this.scene.asset.getAudioById("voice_top"))
+      );
       this.noticeEvent.remove(alignTop, this);
-    }
+    };
     const alignLeft = () => {
       if (this.isAlignOuter) return;
       for (let i = 0; i < this.pieces.length; i += this.pieceCol) if (!this.pieces[i].isFit) return;
-      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "左端完成！", this.scene.asset.getAudioById("voice_left")));
+      this.noticeViewer.addNoticeCard(
+        new NormalNoticeCard(this.scene, "左端完成！", this.scene.asset.getAudioById("voice_left"))
+      );
       this.noticeEvent.remove(alignLeft, this);
-    }
+    };
     const alignRight = () => {
       if (this.isAlignOuter) return;
-      for (let i = this.pieceCol - 1; i < this.pieces.length; i += this.pieceCol) if (!this.pieces[i].isFit) return;
-      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "右端完成！", this.scene.asset.getAudioById("voice_right")));
+      for (let i = this.pieceCol - 1; i < this.pieces.length; i += this.pieceCol)
+        if (!this.pieces[i].isFit) return;
+      this.noticeViewer.addNoticeCard(
+        new NormalNoticeCard(this.scene, "右端完成！", this.scene.asset.getAudioById("voice_right"))
+      );
       this.noticeEvent.remove(alignRight, this);
-    }
+    };
     const alignBottom = () => {
       if (this.isAlignOuter) return;
-      for (let i = 1; i <= this.pieceCol; i++) if (!this.pieces[this.pieces.length - i].isFit) return;
-      this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "下端完成！", this.scene.asset.getAudioById("voice_bottom")));
+      for (let i = 1; i <= this.pieceCol; i++)
+        if (!this.pieces[this.pieces.length - i].isFit) return;
+      this.noticeViewer.addNoticeCard(
+        new NormalNoticeCard(
+          this.scene,
+          "下端完成！",
+          this.scene.asset.getAudioById("voice_bottom")
+        )
+      );
       this.noticeEvent.remove(alignBottom, this);
-    }
+    };
     // 辺ごとの通知は100ピースを超えたパズルのみ
     if (this.pieces.length >= 100) {
       this.noticeEvent.add(alignTop, this);
@@ -286,24 +316,42 @@ export class Jigsaw {
     }
     const per25 = () => {
       if (this.fitPer >= 25) {
-        this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "２５％完成！", this.scene.asset.getAudioById("voice_25")));
+        this.noticeViewer.addNoticeCard(
+          new NormalNoticeCard(
+            this.scene,
+            "２５％完成！",
+            this.scene.asset.getAudioById("voice_25")
+          )
+        );
         this.noticeEvent.remove(per25, this);
         const per50 = () => {
           if (this.fitPer >= 50) {
-            this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "５０％完成！", this.scene.asset.getAudioById("voice_50")));
+            this.noticeViewer.addNoticeCard(
+              new NormalNoticeCard(
+                this.scene,
+                "５０％完成！",
+                this.scene.asset.getAudioById("voice_50")
+              )
+            );
             this.noticeEvent.remove(per50, this);
             const per75 = () => {
               if (this.fitPer >= 75) {
-                this.noticeViewer.addNoticeCard(new NormalNoticeCard(this.scene, "７５％完成！", this.scene.asset.getAudioById("voice_75")));
+                this.noticeViewer.addNoticeCard(
+                  new NormalNoticeCard(
+                    this.scene,
+                    "７５％完成！",
+                    this.scene.asset.getAudioById("voice_75")
+                  )
+                );
                 this.noticeEvent.remove(per75, this);
               }
-            }
+            };
             this.noticeEvent.add(per75, this);
           }
-        }
+        };
         this.noticeEvent.add(per50, this);
       }
-    }
+    };
     this.noticeEvent.add(per25, this);
 
     // this.display.append(params.piecesSrc);
@@ -316,14 +364,16 @@ export class Jigsaw {
     const player = new Player(params, this.players[this.players.length - 1]?.rank);
     const idx = this.players.findIndex(p => p.SamePlayerID(player));
 
-    if (idx == -1) {  // 初参加プレイヤー
+    if (idx == -1) {
+      // 初参加プレイヤー
       this.players.push(player);
       // 自分 && 参加リクエスト中
       if (player.playerID == g.game.selfId && this.isJoinWait) {
         this.isJoinWait = false;
         this.me = player;
       }
-    } else {          // 別デバイス or 再読み込み
+    } else {
+      // 別デバイス or 再読み込み
       // 名前だけ変更する
       this.players[idx].name = player.name;
       // 別端末で自分が参加した
@@ -338,8 +388,7 @@ export class Jigsaw {
         }
       }
     }
-    if (this.jigsawState != "Title")
-      this.uiLayer.result.draw(this.players);
+    if (this.jigsawState != "Title") this.uiLayer.result.draw(this.players);
   }
 
   /** 誰かがピースを掴んだイベントが来たら呼ばれる */
@@ -361,7 +410,6 @@ export class Jigsaw {
     // 動かしたピースを一番上に表示させる
     piece.parent.append(piece);
   }
-
 
   /** 誰かがピースを動かしたイベントが来たら呼ばれる */
   public MovePiece(prm: MoveParam) {
@@ -389,7 +437,7 @@ export class Jigsaw {
     piece.holder = undefined;
     piece.opacity = 1;
     piece.touchable = true;
-    piece.childPiece.forEach(c => c.opacity = 1);
+    piece.childPiece.forEach(c => (c.opacity = 1));
     // 送り主がこの端末だった && 自分がピースを持っていない
     if (sender.SamePlayerID(this.me) && piece.holder != undefined) return;
     // 送り主が自分でないのに、自分がピースを掴んでいた（ローカルでラグの差のため、自分の処理が優先されたが、それは間違いだった）
@@ -446,23 +494,21 @@ export class Jigsaw {
       c.touchable = false;
     }
     // ハマったピースを一番下に表示させる
-    piece.parent.insertBefore(piece, piece.parent.children[0]);
+    piece.parent.insertBefore(piece, piece.parent.children[1]);
 
     this.scoreUp(params.playerID);
   }
 
   /** プレイヤーのスコアを増やす */
   private scoreUp(playerID: string) {
-    if (!!this.me && playerID == this.me.playerID)
-      GameParams.myFitSound.play();
-    else
-      GameParams.otherFitSound.play();
+    if (!!this.me && playerID == this.me.playerID) GameParams.myFitSound.play();
+    else GameParams.otherFitSound.play();
     this.fitCount++;
     this.samePlayerID(playerID).FitPiece();
     this.scoreUpdate();
     this.uiLayer.result.draw(this.players);
 
-    this.fitPer = Math.floor(this.fitCount / this.pieces.length * 100);
+    this.fitPer = Math.floor((this.fitCount / this.pieces.length) * 100);
     this.noticeEvent.fire();
   }
 
@@ -517,11 +563,9 @@ export class Jigsaw {
   private zoomBy(scale: number) {
     scale *= this.camera.scaleX;
     // 拡大率が 0.1 以下にならないように
-    if (scale >= 0.1)
-      this.camera.scale(scale);
+    if (scale >= 0.1) this.camera.scale(scale);
     this.cameraModified();
   }
-
 
   /** カメラをマウス座標によって動かす */
   public moveCameraFromMouse(point: g.CommonOffset): g.CommonOffset {
@@ -534,19 +578,19 @@ export class Jigsaw {
     point.y = Math.floor(point.y);
 
     if (point.x < range.x) {
-      x += point.x <= 0 ? speed : speed * Math.pow((1 - point.x / range.x), 2);
+      x += point.x <= 0 ? speed : speed * Math.pow(1 - point.x / range.x, 2);
     } else {
       const rx = this.uiLayer.display.width - point.x;
       if (rx < range.x) {
-        x -= rx <= 0 ? speed : speed * Math.pow((1 - rx / range.x), 2);
+        x -= rx <= 0 ? speed : speed * Math.pow(1 - rx / range.x, 2);
       }
     }
     if (point.y < range.y) {
-      y += point.y <= 0 ? speed : speed * Math.pow((1 - point.y / range.y), 2);
+      y += point.y <= 0 ? speed : speed * Math.pow(1 - point.y / range.y, 2);
     } else {
       const by = this.uiLayer.display.height - point.y;
       if (by < range.y) {
-        y -= by <= 0 ? speed : speed * Math.pow((1 - by / range.y), 2);
+        y -= by <= 0 ? speed : speed * Math.pow(1 - by / range.y, 2);
       }
     }
 
@@ -563,7 +607,7 @@ export class Jigsaw {
   public moveCamera(point: g.CommonOffset): g.CommonOffset {
     const move = {
       x: -point.x * this.camera.scaleX,
-      y: -point.y * this.camera.scaleY
+      y: -point.y * this.camera.scaleY,
     };
     this.camera.x += move.x;
     this.camera.y += move.y;
@@ -636,15 +680,18 @@ export class Jigsaw {
     const mw = this.pieces[0].width * 1.4;
     const mh = this.pieces[0].height * 1.45;
     // 一番内側が縦横何枚並ぶか（横は両端を含めない、縦は含める）
-    let lx = Math.ceil((this.preview.width) / mw) + 1;
-    let ly = Math.ceil((this.preview.height) / mh) + 2 + 1;
+    let lx = Math.ceil(this.preview.width / mw) + 1;
+    let ly = Math.ceil(this.preview.height / mh) + 2 + 1;
     // ピースを置く位置（初期位置を設定）
     let px = this.margin.width - mw / 2;
     let py = this.margin.height - mh - mh / 2;
     let flg = true;
     const func = (): boolean => {
       let p = ary.pop();
-      if (p == undefined) { flg = false; return true; }
+      if (p == undefined) {
+        flg = false;
+        return true;
+      }
       this.pieces[p].moveTo({ x: px, y: py });
       this.pieces[p].modified();
       return false;
@@ -675,5 +722,4 @@ export class Jigsaw {
       ly += 2;
     }
   }
-
 }

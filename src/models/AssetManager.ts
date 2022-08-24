@@ -1,11 +1,6 @@
 import { Asset } from "../params";
 import { PieceScene } from "../PieceScene";
 
-
-// export interface AssetManagerParam {
-//   scene: PieceScene
-// }
-
 /**
  * アセットのパズル情報を管理するクラス
  */
@@ -21,7 +16,7 @@ export class AssetManager {
     /* assetSettings: string[] のメモ
      * 0: 枠の種類の数（枠は凸・凹２つで１種類）
      * 1: アセットのパズルの種類
-     * 
+     *
      * n: パズルのID
      * 4n+2: ["パズルのタイトル", "パズルの画像ファイル名"]
      * 4n+3: レベル１のパズル情報 [ピース枚数, ピースの縦幅, ピースの縦幅, 画像を切り始める左上座標X, 左上座標Y]
@@ -33,7 +28,7 @@ export class AssetManager {
     for (let i = 0; i < +assetSettings[0]; i++)
       this.wakus.push([
         this.scene.asset.getImage(`${Asset.WKAU_DIR}/${i}0.png`),
-        this.scene.asset.getImage(`${Asset.WKAU_DIR}/${i}1.png`)
+        this.scene.asset.getImage(`${Asset.WKAU_DIR}/${i}1.png`),
       ]);
     // パズル画像・情報
     this.assets = [];
@@ -60,7 +55,7 @@ export class AssetManager {
         CreateDif(settings[num + 3]),
         CreateDif(settings[num + 4]),
         CreateDif(settings[num + 5]),
-      ]
+      ],
     };
   }
 
@@ -72,13 +67,13 @@ export class AssetManager {
     return [
       new g.Sprite({
         scene: this.scene,
-        src: this.scene.asset.getImage(`${Asset.WKAU_DIR}/${id}0.png`)
+        src: this.scene.asset.getImage(`${Asset.WKAU_DIR}/${id}0.png`),
       }),
       new g.Sprite({
         scene: this.scene,
-        src: this.scene.asset.getImage(`${Asset.WKAU_DIR}/${id}1.png`)
-      })
-    ]
+        src: this.scene.asset.getImage(`${Asset.WKAU_DIR}/${id}1.png`),
+      }),
+    ];
   }
 }
 
@@ -118,11 +113,11 @@ function CreateDif(s: string): PzlDifficulty {
     count: +ss[0],
     size: {
       width: +ss[1],
-      height: +ss[2]
+      height: +ss[2],
     },
     origin: {
       x: +ss[3],
-      y: +ss[4]
-    }
+      y: +ss[4],
+    },
   };
 }

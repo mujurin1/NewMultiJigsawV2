@@ -33,8 +33,8 @@ export function spriteSet(spr: g.E, wid: number, hei: number) {
   const widPer = wid / spr.width;
   const heiPer = hei / spr.height;
   // 比率が `widPer == heiPer == 1.0` の場合無駄な処理になるけどまず無いしいいや
+  // より小さい方に合わせて伸縮させる
   if (widPer > heiPer) {         // プレビューエリアに対してパズルが横長
-    // より小さい方に合わせて伸縮させる
     spr.scale(heiPer);
     // 小さい方は下が余ってるので真ん中に動かす
     spr.x = (wid - spr.width * spr.scaleX) / 2;
