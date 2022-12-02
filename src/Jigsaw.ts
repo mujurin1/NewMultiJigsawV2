@@ -361,7 +361,7 @@ export class Jigsaw {
    * プレイヤーが参加した
    */
   public joinPlayer(params: PlayerParam) {
-    const player = new Player(params, this.players[this.players.length - 1]?.rank);
+    let player = new Player(params, this.players[this.players.length - 1]?.rank);
     const idx = this.players.findIndex(p => p.SamePlayerID(player));
 
     if (idx == -1) {
@@ -376,6 +376,7 @@ export class Jigsaw {
       // 別デバイス or 再読み込み
       // 名前だけ変更する
       this.players[idx].name = player.name;
+      player = this.players[idx];
       // 別端末で自分が参加した
       if (player.playerID == g.game.selfId) {
         // 参加リクエスト中
